@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="created" content="2026-08-22 21:00:09 +0800">
-<meta name="updated" content="2026-09-05 20:59:26 +0800">
+<meta name="updated" content="2026-09-05 22:42:06 +0800">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>北歐路線方案地圖</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -108,53 +108,6 @@
   </div>
 </div>
 
-<!-- ── 羅浮敦 → 特羅姆瑟 確定方案 ── -->
-<div class="route-card" style="margin-bottom:20px;">
-  <div class="card-header plan2" style="padding:10px 16px;">
-    <span class="plan-label">已確定</span>
-    <span class="plan-title">羅浮敦群島 → 特羅姆瑟：EVE 取車・Svolvær→EVE 還車・Widerøe 飛 TOS</span>
-  </div>
-  <table style="margin:0;border-radius:0;">
-    <thead>
-      <tr>
-        <th style="width:20%">段落</th>
-        <th style="width:28%">交通</th>
-        <th style="width:20%">時間</th>
-        <th>說明</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>🚌 Narvik → EVE</td>
-        <td>巴士至 Evenes 機場</td>
-        <td>10/29 Narvik 12:37 抵<br>→ 午餐後搭巴士至 EVE</td>
-        <td>Narvik 市區用餐休息（約 3h）後搭巴士至 EVE 機場取車</td>
-      </tr>
-      <tr>
-        <td>🚗 取車</td>
-        <td>EVE 機場取車</td>
-        <td>10/29 15:30 取車</td>
-        <td>EVE 取車後自駕至 Svolvær（約 1.5–2h），當晚抵達</td>
-      </tr>
-      <tr>
-        <td>🚗 還車</td>
-        <td>EVE 同地還車</td>
-        <td>11/02 12:00 前</td>
-        <td>Hamnøy → EVE（約 2.5–3h），需預留足夠時間趕上 14:40 班機</td>
-      </tr>
-      <tr style="background:#f0fdf4">
-        <td>✈ EVE → TOS</td>
-        <td>Widerøe WF537（或同日班）</td>
-        <td>11/02 <strong>14:40</strong> 出發</td>
-        <td>871 NOK／人，含托運；抵 Tromsø 約 16:00；TOS 原訂住宿當天入住</td>
-      </tr>
-    </tbody>
-  </table>
-  <div style="padding:10px 16px;font-size:12px;color:#57606a;background:#f7f8fa;border-top:1px solid #e5e7eb;">
-    💡 <strong>決策理由：</strong>Hurtigruten / Havila 渡輪無合適班次，改飛機方案。Widerøe 871 NOK／人含托運；EVE 同地取還車無異地費；11/02 仍可在羅浮敦玩半天，中午前開往 EVE 即可。
-  </div>
-</div>
-
 <!-- ── 關鍵說明 ── -->
 <div class="route-card" style="margin-bottom:20px;">
   <div class="card-header plan3" style="padding:10px 16px;">
@@ -176,7 +129,7 @@
       <div class="col-hd con"><span class="dot dot-c"></span>仍需確認 / 注意</div>
       <ul>
         <li><span class="ic">!</span><span><strong>⚡ 兩台均為電動車，需確認充電</strong><br>BMW X3（Avis）+ Volvo EX40（Hertz）皆為電能驅動；建議出發前至 <a href="https://www.plugshare.com" target="_blank">Plugshare</a> 確認 Svolvær、Hamnøy 及沿途充電樁位置，並確認住宿有充電設施。</span></li>
-        <li><span class="ic">✓</span><span><strong>Narvik → EVE 巴士：200號 13:43（確定）</strong><br>12:37 抵 Narvik 後快速用餐，13:43 搭 200號巴士至 EVE（14:51 抵），取車後約 17:00 抵 Svolvær。</span></li>
+        <li><span class="ic">✓</span><span><strong>Narvik → EVE 巴士：200號 13:43（確定）</strong><br>12:37 抵 Narvik stasjon 後快速用餐，步行 268m 至 Bromsgård (ved Narvik storsenter)，13:47 搭 200號巴士（Harstad 方向）至 EVE（14:51 抵），票價 66 kr／人；取車後約 17:00 抵 Svolvær。</span></li>
         <li><span class="ic">!</span><span><strong>11/02 Hamnøy→EVE 時間預留</strong><br>Hamnøy→Svolvær→EVE 約 2.5–3h；14:40 班機建議 13:00 前抵 EVE，需 11:00 前出發。</span></li>
         <li><span class="ic">!</span><span><strong>租車日期需重新確認</strong><br>行程前移一天，租車改為 10/29 15:30 取車、11/02 12:00 還車，需至 Klook（Avis）及 Trip.com（Hertz）重新查詢確認車況與價格。</span></li>
       </ul>
@@ -217,14 +170,14 @@
         </tr>
       </thead>
       <tbody>
-        <!-- AMS → ARN（新增） -->
+        <!-- AMS → ARN -->
         <tr style="background:#f0fdf4">
           <td><strong>阿姆斯特丹</strong><br><span style="font-size:11px;color:#57606a">10/24 07:40 抵 AMS</span></td>
           <td>—</td>
-          <td>✈ KLM（直飛）</td>
+          <td>✈ KLM KL1219（直飛）<br><span style="font-size:11px;color:#57606a">B737・3-3 座・76cm 間距</span><br><span style="font-size:11px;color:#57606a">輕食・可能備 Wi-Fi・可能備 USB</span></td>
           <td>10/24 <strong>11:10</strong> AMS → <strong>13:10</strong> ARN（2h）</td>
-          <td><a href="https://www.skyscanner.com" target="_blank">skyscanner.com</a></td>
-          <td><span style="font-size:11px;color:#57606a">NT$7,686／人・直飛・含行李</span></td>
+          <td style="text-align:center;"><a href="https://www.skyscanner.com" target="_blank">skyscanner.com</a></td>
+          <td><span style="font-size:11px;color:#57606a">NT$7,735／人・直飛・含行李</span></td>
         </tr>
         <!-- 斯德哥爾摩 -->
         <tr>
@@ -232,13 +185,12 @@
           <td rowspan="2">2 晚</td>
           <td>🚂 SJ Night train 94</td>
           <td>10/26 <strong>18:12</strong> STK → Boden 05:42</td>
-          <td><a href="https://www.sj.se/en" target="_blank">sj.se</a></td>
+          <td rowspan="2" style="vertical-align:middle;text-align:center;"><a href="https://www.sj.se/en" target="_blank">sj.se</a><br><span style="font-size:11px;color:#57606a">（統一購買）</span></td>
           <td><span style="font-size:11px;color:#57606a">3人：Seat Fr.2,175 / Couchette Fr.3,375 / Sleeping Fr.4,395 SEK</span></td>
         </tr>
         <tr>
           <td>🚂 SJ InterCity 98</td>
           <td>Boden <strong>06:07</strong> → Abisko <strong>10:43</strong></td>
-          <td><a href="https://www.sj.se/en" target="_blank">sj.se</a></td>
           <td><span style="font-size:11px;color:#57606a">含於上票</span></td>
         </tr>
         <!-- 阿比斯庫 -->
@@ -247,7 +199,7 @@
           <td>2 晚</td>
           <td>🚂 SJ InterCity 98</td>
           <td>10/29 <strong>10:46</strong> Abisko → <strong>12:37</strong> Narvik</td>
-          <td><a href="https://www.sj.se/en" target="_blank">sj.se</a></td>
+          <td style="text-align:center;"><a href="https://www.sj.se/en" target="_blank">sj.se</a><br><span style="font-size:11px;color:#57606a">（統一購買）</span></td>
           <td><span style="font-size:11px;color:#57606a">255 SEK／3人・2 class・Non-rebookable</span></td>
         </tr>
         <!-- Narvik → EVE -->
@@ -255,26 +207,24 @@
           <td rowspan="4"><strong>Narvik → EVE</strong><br><span style="font-size:11px;color:#57606a">10/29 12:37 抵 Narvik<br>Evenes 機場取車</span></td>
           <td rowspan="4">—</td>
           <td>🚌 200號巴士（建議）</td>
-          <td><strong>13:43</strong> Narvik → <strong>14:51</strong> EVE（1h8min）</td>
-          <td><a href="https://www.reisnordland.no/" target="_blank">reisnordland.no</a></td>
-          <td><span style="font-size:11px;color:#57606a">約 333 kr／人</span></td>
+          <td><strong>13:43</strong> Narvik stasjon → 步行 268m → <strong>13:47</strong> Bromsgård 搭車 → <strong>14:51</strong> EVE（1h8min，32 stops）</td>
+          <td rowspan="2" style="vertical-align:middle;text-align:center;"><a href="https://www.reisnordland.no/" target="_blank">reisnordland.no</a></td>
+          <td><span style="font-size:11px;color:#57606a"><strong>66 kr</strong>／人</span></td>
         </tr>
         <tr style="background:#fef9ec">
           <td>🚌 300號巴士（備選）</td>
-          <td><strong>15:42</strong> Narvik → <strong>16:50</strong> EVE（1h8min）</td>
-          <td><a href="https://www.reisnordland.no/" target="_blank">reisnordland.no</a></td>
-          <td><span style="font-size:11px;color:#57606a">約 333 kr／人</span></td>
+          <td><strong>15:42</strong> Narvik stasjon → 步行 268m → <strong>15:46</strong> Bromsgård 搭車 → <strong>16:50</strong> EVE（1h8min，36 stops）</td>
+          <td><span style="font-size:11px;color:#57606a"><strong>66 kr</strong>／人</span></td>
         </tr>
         <tr style="background:#fef9ec">
           <td>🚗 Avis BMW X3（或類似中型SUV）⚡</td>
-          <td>10/29 <strong>15:30</strong> 取車 → 11/01 <strong>12:00</strong> 還車</td>
-          <td><a href="https://www.klook.com" target="_blank">klook.com</a></td>
+          <td>10/29 <strong>15:30</strong> 取車 → 11/02 <strong>12:00</strong> 還車</td>
+          <td rowspan="2" style="vertical-align:middle;text-align:center;"><a href="https://www.klook.com" target="_blank">klook.com</a></td>
           <td><span style="font-size:11px;color:#57606a">NT$5,750・無限里程・滿取滿還</span></td>
         </tr>
         <tr style="background:#fef9ec">
           <td>🚗 Hertz Volvo EX40（或類似標準SUV）⚡</td>
-          <td>10/29 <strong>15:30</strong> 取車 → 11/01 <strong>12:00</strong> 還車</td>
-          <td><a href="https://www.trip.com" target="_blank">trip.com</a></td>
+          <td>10/29 <strong>15:30</strong> 取車 → 11/02 <strong>12:00</strong> 還車</td>
           <td><span style="font-size:11px;color:#57606a">NT$8,865・無限里程・滿取滿還</span></td>
         </tr>
         <!-- 羅浮敦 -->
@@ -283,7 +233,7 @@
           <td>4 晚</td>
           <td>✈ Widerøe EVE→TOS</td>
           <td>11/02 <strong>14:40</strong> EVE → <strong>16:00</strong> TOS（1h20m）</td>
-          <td><a href="https://www.wideroe.no" target="_blank">wideroe.no</a></td>
+          <td style="text-align:center;"><a href="https://www.wideroe.no" target="_blank">wideroe.no</a></td>
           <td><span style="font-size:11px;color:#57606a">871 NOK／人・含托運</span></td>
         </tr>
         <!-- 特羅姆瑟 -->
@@ -292,7 +242,7 @@
           <td rowspan="2">2 晚</td>
           <td>✈ SAS SK4451</td>
           <td>11/04 <strong>11:55</strong> TOS → <strong>14:40</strong> CPH</td>
-          <td rowspan="2"><a href="https://www.skyscanner.com.tw" target="_blank">Skyscanner</a></td>
+          <td rowspan="2" style="vertical-align:middle;text-align:center;"><a href="https://www.skyscanner.com.tw" target="_blank">Skyscanner</a></td>
           <td rowspan="2"><span style="font-size:11px;color:#57606a">NT$4,208／人・含托運・4h55m</span></td>
         </tr>
         <tr>
@@ -376,7 +326,7 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const map = L.map('map').setView([66.5, 19.5], 5);
+const map = L.map('map').setView([65.5, 17.0], 4);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors', maxZoom: 13
 }).addTo(map);
@@ -387,7 +337,7 @@ const CITIES = {
   abisko:    { ll: [68.35, 18.82], name: '阿比斯庫', en: 'Abisko', lat: '68.4°N', main: false,
     desc: '<b>住宿：2 晚</b>　北極光核心景點（北極圈以北）。<br>🚂 10/27 <b>10:43</b> 夜臥直達抵達。白天健行 Kungsleden 步道，夜晚 STF 極光站觀測極光。<br>🚂 10/29 <b>10:46</b> 出發 SJ InterCity 98 → Narvik <b>12:37</b> 抵（1h51m，0 轉乘，255 SEK／3人）。訂票：<a href="https://www.sj.se/en" target="_blank">sj.se</a>' },
   narvik:    { ll: [68.44, 17.43], name: 'Narvik → EVE', en: 'Narvik / Evenes', lat: '68.4°N', main: false,
-    desc: '<b>純轉乘點（不過夜）</b><br>🚂 SJ InterCity 98 10:46 自 Abisko → <b>12:37 抵 Narvik Station</b>。⏳ Narvik 市區午餐後搭巴士至 EVE：<br>班① 200號 <b>13:43→14:51</b>（取車後約 17:00 抵 Svolvær）<br>班② 300號 <b>15:42→16:50</b>（取車後約 18:30 抵 Svolvær）<br>🚗 EVE 取車後自駕 Svolvær（約 1.5–2h）。查詢：<a href="https://www.reisnordland.no/" target="_blank">reisnordland.no</a>' },
+    desc: '<b>純轉乘點（不過夜）</b><br>🚂 SJ InterCity 98 10:46 自 Abisko → <b>12:37 抵 Narvik stasjon</b>。步行 268m 至 Bromsgård (ved Narvik storsenter) 搭巴士：<br>班① 200號 <b>13:47→14:51</b>（Harstad 方向，32 stops，66 kr／人；取車後約 17:00 抵 Svolvær）<br>班② 300號 <b>15:46→16:50</b>（Svolvær-Leknes-Å i Lofoten，36 stops，66 kr／人；取車後約 18:30 抵 Svolvær）<br>🚗 EVE 取車後自駕 Svolvær（約 1.5–2h）。查詢：<a href="https://www.reisnordland.no/" target="_blank">reisnordland.no</a>' },
   lofoten:   { ll: [68.15, 13.80], name: '羅浮敦群島', en: 'Lofoten', lat: '68.2°N', main: false,
     desc: '<b>住宿：4 晚（Svolvær + Hamnøy）</b>　挪威最具代表性的群島風景。<br>🚗 EVE 自駕約 1.5–2h 抵 Svolvær。前 3 晚住 Svolvær，最後 1 晚移住 Hamnøy（Reine 峽灣）。11/02 上午玩完後開回 EVE 同地還車（約 1.5–2h）→ ✈ Widerøe 14:40 飛 TOS（871 NOK／人，含托運）。' },
   tromso:    { ll: [69.65, 18.96], name: '特羅姆瑟', en: 'Tromsø', lat: '69.7°N', main: true,
@@ -404,15 +354,15 @@ const leftSet = new Set(['narvik','abisko','lofoten','tromso']);
 
 Object.entries(CITIES).forEach(([id, c]) => {
   const radius = c.main ? 10 : 7;
+  const side = leftSet.has(id) ? 'left' : 'right';
+  const offset = side === 'left' ? [-14, 0] : [14, 0];
   const m = L.circleMarker(c.ll, {
     radius, fillColor: '#e05c3a', color: '#fff', weight: 2, fillOpacity: 1
   }).addTo(map);
-  const side = leftSet.has(id) ? 'left' : 'right';
-  const offset = side === 'left' ? [-14, 0] : [14, 0];
-  L.tooltip({ permanent: true, direction: side, offset, className: 'city-label' })
-    .setContent(`<b>${c.name}</b> <span style="color:#57606a;font-size:11px">${c.en} · ${c.lat}</span>`)
-    .addTo(map)
-    .setLatLng(c.ll);
+  m.bindTooltip(
+    `<b>${c.name}</b> <span style="color:#57606a;font-size:11px">${c.en} · ${c.lat}</span>`,
+    { permanent: true, direction: side, offset, className: 'city-label' }
+  );
   m.on('click', () => {
     document.getElementById('info-panel').innerHTML =
       `<h3>${c.name} <span style="font-weight:400;font-size:12px;color:#57606a">${c.en} · ${c.lat}</span></h3><p style="margin-top:6px">${c.desc}</p>`;
