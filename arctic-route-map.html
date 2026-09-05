@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="created" content="2026-08-22 21:00:09 +0800">
+<meta name="updated" content="2026-09-05 20:59:26 +0800">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>北歐路線方案地圖</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; font-size: 14px; background: #f7f8fa; color: #1f2328; }
+  .page { max-width: 820px; margin: 0 auto; padding: 0 0 48px; }
+  .wide { max-width: 1200px; margin: 0 auto; padding: 0 0 48px; }
+  h1 { font-size: 18px; font-weight: 700; padding: 20px 20px 4px; }
+  .subtitle { font-size: 12px; color: #57606a; padding: 0 20px 12px; }
+
+  /* map section */
+  .toggle-bar { display: flex; gap: 8px; flex-wrap: wrap; padding: 10px 16px; background: #fff; border-bottom: 1px solid #e5e7eb; }
+  .toggle-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 5px 12px; border-radius: 20px; border: 2px solid transparent;
+    cursor: pointer; font-size: 12px; font-weight: 600; background: #f7f8fa; transition: opacity .2s;
+  }
+  .toggle-btn .swatch { width: 22px; height: 4px; border-radius: 2px; }
+  .toggle-btn.active   { border-color: currentColor; background: #fff; }
+  .toggle-btn.inactive { opacity: .35; }
+  .btn1 { color: #3b82d4; } .btn2 { color: #16a34a; } .btn3 { color: #7c5cd8; }
+  .info-panel { background: #fff; border-top: 1px solid #e5e7eb; padding: 12px 16px; min-height: 80px; }
+  .info-panel h3 { font-size: 13px; margin-bottom: 5px; }
+  .info-panel p  { font-size: 12px; color: #57606a; line-height: 1.7; }
+  .city-label { background: transparent !important; border: none !important; box-shadow: none !important; font-size: 12px !important; font-weight: 600; color: #1f2328; white-space: nowrap; }
+  .city-label::before { display: none !important; }
+
+  /* route cards */
+  .section-title { font-size: 15px; font-weight: 700; padding: 0 20px 10px; border-bottom: 1px solid #e5e7eb; margin: 0 20px 16px; }
+  .route-card { border: 1px solid #e5e7eb; border-radius: 8px; margin: 0 20px 20px; overflow: hidden; }
+  .card-header { padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+  .card-header.plan1 { background: #eff6ff; border-bottom: 1px solid #bfdbfe; }
+  .card-header.plan2 { background: #f0fdf4; border-bottom: 1px solid #bbf7d0; }
+  .card-header.plan3 { background: #fdf4ff; border-bottom: 1px solid #e9d5ff; }
+  .plan-label { font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; white-space: nowrap; color: #fff; }
+  .plan1 .plan-label { background: #3b82d4; }
+  .plan2 .plan-label { background: #22c55e; }
+  .plan3 .plan-label { background: #7c5cd8; }
+  .plan-title { font-size: 14px; font-weight: 600; }
+  .route-path { font-size: 12px; color: #57606a; padding: 7px 16px 8px; background: #f7f8fa; border-bottom: 1px solid #e5e7eb; display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+  .city-name { font-weight: 600; color: #1f2328; }
+  .arr { color: #3b82d4; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; }
+  .col { padding: 12px 16px; }
+  .col:first-child { border-right: 1px solid #e5e7eb; }
+  .col-hd { font-size: 11px; font-weight: 700; letter-spacing: .04em; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+  .col-hd.pro { color: #16a34a; } .col-hd.con { color: #dc2626; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .dot-p { background: #16a34a; } .dot-c { background: #dc2626; }
+  ul { list-style: none; }
+  li { display: flex; gap: 7px; margin-bottom: 9px; font-size: 12px; line-height: 1.55; }
+  li:last-child { margin-bottom: 0; }
+  .ic { flex-shrink: 0; margin-top: 1px; }
+  .tag { display: inline-block; font-size: 10px; font-weight: 600; padding: 1px 5px; border-radius: 3px; margin-left: 3px; }
+  .tag-w { background: #fef3c7; color: #92400e; }
+  .tag-k { background: #eff6ff; color: #1d4ed8; }
+
+  /* summary table */
+  .summary-wrap { margin: 0 20px 0; }
+  .summary-wrap.full-width { margin: 0 auto; padding: 0 24px 48px; max-width: 1280px; }
+  .summary-wrap.full-width .route-card { margin-left: 0; margin-right: 0; }
+  .summary-title { font-size: 15px; font-weight: 700; padding-bottom: 10px; border-bottom: 1px solid #e5e7eb; margin-bottom: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { background: #f7f8fa; padding: 8px 10px; text-align: left; font-weight: 600; border: 1px solid #e5e7eb; white-space: nowrap; }
+  td { padding: 8px 10px; border: 1px solid #e5e7eb; vertical-align: top; }
+  tr:hover td { background: #fafafa; }
+  .g { color: #16a34a; font-weight: 600; } .b { color: #dc2626; font-weight: 600; } .m { color: #d97706; font-weight: 600; }
+
+  footer { margin-top: 28px; padding: 12px 20px; border-top: 1px solid #e5e7eb; text-align: center; font-size: 11px; color: #57606a; background: #f7f8fa; }
+
+  /* 地圖區塊 */
+  .map-section { border: 1px solid #e5e7eb; border-radius: 8px; margin: 0 20px 28px; overflow: hidden; }
+  .map-section-header { background: #f7f8fa; border-bottom: 1px solid #e5e7eb; padding: 10px 16px; font-size: 13px; font-weight: 600; }
+  .toggle-bar { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 16px; border-bottom: 1px solid #e5e7eb; background: #fff; }
+  .toggle-btn { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border: 1.5px solid #e5e7eb; border-radius: 999px; background: #fff; font-size: 12px; cursor: pointer; font-weight: 500; color: #57606a; transition: border-color .15s; }
+  .toggle-btn.active { border-color: #3b82d4; color: #3b82d4; background: #eff6ff; }
+  .swatch { display: inline-block; width: 18px; height: 3px; border-radius: 2px; }
+  #map { height: 480px; }
+  .info-panel { padding: 12px 16px; background: #fff; border-top: 1px solid #e5e7eb; font-size: 12.5px; min-height: 60px; }
+  .info-panel h3 { font-size: 13px; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<h1>北歐路線方案比較</h1>
+<p class="subtitle">出發：2026/10/24 AMS→ARN　｜　回程：2026/11/07 離阿姆斯特丹　｜　歐洲在地 14 天</p>
+
+<!-- ── 互動地圖 ── -->
+<div class="map-section">
+  <div class="map-section-header">互動地圖　— 點擊按鈕切換方案，點擊城市標記查看說明</div>
+  <div class="toggle-bar">
+    <button class="toggle-btn btn1 active" id="btn1">
+      <span class="swatch" style="background:#3b82d4"></span>完整路線（實線）
+    </button>
+  </div>
+  <div id="map"></div>
+  <div class="info-panel" id="info-panel">
+    <h3>城市說明</h3>
+    <p>點擊地圖上的城市圓點，查看該站在各方案中的角色與時刻資訊。</p>
+  </div>
+</div>
+
+<!-- ── 羅浮敦 → 特羅姆瑟 確定方案 ── -->
+<div class="route-card" style="margin-bottom:20px;">
+  <div class="card-header plan2" style="padding:10px 16px;">
+    <span class="plan-label">已確定</span>
+    <span class="plan-title">羅浮敦群島 → 特羅姆瑟：EVE 取車・Svolvær→EVE 還車・Widerøe 飛 TOS</span>
+  </div>
+  <table style="margin:0;border-radius:0;">
+    <thead>
+      <tr>
+        <th style="width:20%">段落</th>
+        <th style="width:28%">交通</th>
+        <th style="width:20%">時間</th>
+        <th>說明</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>🚌 Narvik → EVE</td>
+        <td>巴士至 Evenes 機場</td>
+        <td>10/29 Narvik 12:37 抵<br>→ 午餐後搭巴士至 EVE</td>
+        <td>Narvik 市區用餐休息（約 3h）後搭巴士至 EVE 機場取車</td>
+      </tr>
+      <tr>
+        <td>🚗 取車</td>
+        <td>EVE 機場取車</td>
+        <td>10/29 15:30 取車</td>
+        <td>EVE 取車後自駕至 Svolvær（約 1.5–2h），當晚抵達</td>
+      </tr>
+      <tr>
+        <td>🚗 還車</td>
+        <td>EVE 同地還車</td>
+        <td>11/02 12:00 前</td>
+        <td>Hamnøy → EVE（約 2.5–3h），需預留足夠時間趕上 14:40 班機</td>
+      </tr>
+      <tr style="background:#f0fdf4">
+        <td>✈ EVE → TOS</td>
+        <td>Widerøe WF537（或同日班）</td>
+        <td>11/02 <strong>14:40</strong> 出發</td>
+        <td>871 NOK／人，含托運；抵 Tromsø 約 16:00；TOS 原訂住宿當天入住</td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="padding:10px 16px;font-size:12px;color:#57606a;background:#f7f8fa;border-top:1px solid #e5e7eb;">
+    💡 <strong>決策理由：</strong>Hurtigruten / Havila 渡輪無合適班次，改飛機方案。Widerøe 871 NOK／人含托運；EVE 同地取還車無異地費；11/02 仍可在羅浮敦玩半天，中午前開往 EVE 即可。
+  </div>
+</div>
+
+<!-- ── 關鍵說明 ── -->
+<div class="route-card" style="margin-bottom:20px;">
+  <div class="card-header plan3" style="padding:10px 16px;">
+    <span class="plan-label">關鍵說明</span>
+    <span class="plan-title">行程設計邏輯 + 已確認事項</span>
+  </div>
+  <div class="cols">
+    <div class="col">
+      <div class="col-hd pro"><span class="dot dot-p"></span>已確認的安排</div>
+      <ul>
+        <li><span class="ic">✓</span><span><strong>夜臥火車直達阿比斯庫</strong><br>斯德哥爾摩 18:12 出發，Boden 轉車後 10/27 10:43 直抵 Abisko Turiststation，行程俐落。</span></li>
+        <li><span class="ic">✓</span><span><strong>阿比斯庫 2 晚</strong><br>北極光最佳觀測地，2 晚提高看到極光的機率；白天可走 Kungsleden 健行步道。</span></li>
+        <li><span class="ic">✓</span><span><strong>EVE 同地取還車（已確認車型）</strong><br>Avis BMW X3（或類似中型SUV）NT$5,750 / Hertz Volvo EX40（或類似標準SUV）NT$8,865；10/29 15:30 取車，11/02 12:00 還車；兩台合計 NT$14,615。訂票：<a href="https://www.klook.com" target="_blank">Klook</a>（Avis）、<a href="https://www.trip.com" target="_blank">Trip.com</a>（Hertz）。</span></li>
+        <li><span class="ic">✓</span><span><strong>羅浮敦雙基地</strong><br>Svolvær（北部據點）+ Hamnøy（峽灣景色最佳），充分體驗群島多樣風貌。</span></li>
+        <li><span class="ic">✓</span><span><strong>Widerøe EVE→TOS 11/02 14:40（確定）</strong><br>871 NOK／人含托運；從 EVE 還車後直接 check-in，約 16:00 抵 TOS，原訂住宿當天入住。</span></li>
+      </ul>
+    </div>
+    <div class="col">
+      <div class="col-hd con"><span class="dot dot-c"></span>仍需確認 / 注意</div>
+      <ul>
+        <li><span class="ic">!</span><span><strong>⚡ 兩台均為電動車，需確認充電</strong><br>BMW X3（Avis）+ Volvo EX40（Hertz）皆為電能驅動；建議出發前至 <a href="https://www.plugshare.com" target="_blank">Plugshare</a> 確認 Svolvær、Hamnøy 及沿途充電樁位置，並確認住宿有充電設施。</span></li>
+        <li><span class="ic">✓</span><span><strong>Narvik → EVE 巴士：200號 13:43（確定）</strong><br>12:37 抵 Narvik 後快速用餐，13:43 搭 200號巴士至 EVE（14:51 抵），取車後約 17:00 抵 Svolvær。</span></li>
+        <li><span class="ic">!</span><span><strong>11/02 Hamnøy→EVE 時間預留</strong><br>Hamnøy→Svolvær→EVE 約 2.5–3h；14:40 班機建議 13:00 前抵 EVE，需 11:00 前出發。</span></li>
+        <li><span class="ic">!</span><span><strong>租車日期需重新確認</strong><br>行程前移一天，租車改為 10/29 15:30 取車、11/02 12:00 還車，需至 Klook（Avis）及 Trip.com（Hertz）重新查詢確認車況與價格。</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div><!-- /.page -->
+
+<!-- ── 行程總覽表（全寬突破）── -->
+<div class="summary-wrap full-width">
+  <!-- 行程路線簡覽 -->
+  <div class="route-card" style="margin-bottom:16px;">
+    <div class="card-header plan1">
+      <span class="plan-label">南往北</span>
+      <span class="plan-title">阿姆斯特丹 → 斯德哥爾摩 → 特羅姆瑟 → 阿姆斯特丹</span>
+    </div>
+    <div class="route-path">
+    <span class="city-name">✈ 阿姆斯特丹</span><span class="arr">→（KLM 直飛）</span>
+    <span class="city-name">斯德哥爾摩</span><span class="arr">→（夜臥火車，直達）</span>
+    <span class="city-name">阿比斯庫</span><span class="arr">→（火車 → Narvik → 巴士 → EVE 取車）</span>
+    <span class="city-name">羅浮敦群島</span><span class="arr">→（EVE 還車 ✈ Widerøe）</span>
+    <span class="city-name">特羅姆瑟</span><span class="arr">→（✈ SAS）</span>
+    <span class="city-name">✈ 阿姆斯特丹</span>
+  </div>
+    <table style="margin:0;border-radius:0;">
+      <thead>
+        <tr>
+          <th style="width:16%">站點</th>
+          <th style="width:8%">住宿</th>
+          <th colspan="4">離開交通・訂票資訊</th>
+        </tr>
+        <tr style="background:#eef2f7;">
+          <th></th><th></th>
+          <th style="width:18%">交通工具</th>
+          <th style="width:22%">時間</th>
+          <th style="width:14%">訂票平台</th>
+          <th>費用</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- AMS → ARN（新增） -->
+        <tr style="background:#f0fdf4">
+          <td><strong>阿姆斯特丹</strong><br><span style="font-size:11px;color:#57606a">10/24 07:40 抵 AMS</span></td>
+          <td>—</td>
+          <td>✈ KLM（直飛）</td>
+          <td>10/24 <strong>11:10</strong> AMS → <strong>13:10</strong> ARN（2h）</td>
+          <td><a href="https://www.skyscanner.com" target="_blank">skyscanner.com</a></td>
+          <td><span style="font-size:11px;color:#57606a">NT$7,686／人・直飛・含行李</span></td>
+        </tr>
+        <!-- 斯德哥爾摩 -->
+        <tr>
+          <td rowspan="2"><strong>斯德哥爾摩</strong><br><span style="font-size:11px;color:#57606a">10/24 13:10 飛抵 ARN</span></td>
+          <td rowspan="2">2 晚</td>
+          <td>🚂 SJ Night train 94</td>
+          <td>10/26 <strong>18:12</strong> STK → Boden 05:42</td>
+          <td><a href="https://www.sj.se/en" target="_blank">sj.se</a></td>
+          <td><span style="font-size:11px;color:#57606a">3人：Seat Fr.2,175 / Couchette Fr.3,375 / Sleeping Fr.4,395 SEK</span></td>
+        </tr>
+        <tr>
+          <td>🚂 SJ InterCity 98</td>
+          <td>Boden <strong>06:07</strong> → Abisko <strong>10:43</strong></td>
+          <td><a href="https://www.sj.se/en" target="_blank">sj.se</a></td>
+          <td><span style="font-size:11px;color:#57606a">含於上票</span></td>
+        </tr>
+        <!-- 阿比斯庫 -->
+        <tr>
+          <td><strong>阿比斯庫</strong><br><span style="font-size:11px;color:#57606a">10/27 10:43 抵</span></td>
+          <td>2 晚</td>
+          <td>🚂 SJ InterCity 98</td>
+          <td>10/29 <strong>10:46</strong> Abisko → <strong>12:37</strong> Narvik</td>
+          <td><a href="https://www.sj.se/en" target="_blank">sj.se</a></td>
+          <td><span style="font-size:11px;color:#57606a">255 SEK／3人・2 class・Non-rebookable</span></td>
+        </tr>
+        <!-- Narvik → EVE -->
+        <tr style="background:#fef9ec">
+          <td rowspan="4"><strong>Narvik → EVE</strong><br><span style="font-size:11px;color:#57606a">10/29 12:37 抵 Narvik<br>Evenes 機場取車</span></td>
+          <td rowspan="4">—</td>
+          <td>🚌 200號巴士（建議）</td>
+          <td><strong>13:43</strong> Narvik → <strong>14:51</strong> EVE（1h8min）</td>
+          <td><a href="https://www.reisnordland.no/" target="_blank">reisnordland.no</a></td>
+          <td><span style="font-size:11px;color:#57606a">約 333 kr／人</span></td>
+        </tr>
+        <tr style="background:#fef9ec">
+          <td>🚌 300號巴士（備選）</td>
+          <td><strong>15:42</strong> Narvik → <strong>16:50</strong> EVE（1h8min）</td>
+          <td><a href="https://www.reisnordland.no/" target="_blank">reisnordland.no</a></td>
+          <td><span style="font-size:11px;color:#57606a">約 333 kr／人</span></td>
+        </tr>
+        <tr style="background:#fef9ec">
+          <td>🚗 Avis BMW X3（或類似中型SUV）⚡</td>
+          <td>10/29 <strong>15:30</strong> 取車 → 11/01 <strong>12:00</strong> 還車</td>
+          <td><a href="https://www.klook.com" target="_blank">klook.com</a></td>
+          <td><span style="font-size:11px;color:#57606a">NT$5,750・無限里程・滿取滿還</span></td>
+        </tr>
+        <tr style="background:#fef9ec">
+          <td>🚗 Hertz Volvo EX40（或類似標準SUV）⚡</td>
+          <td>10/29 <strong>15:30</strong> 取車 → 11/01 <strong>12:00</strong> 還車</td>
+          <td><a href="https://www.trip.com" target="_blank">trip.com</a></td>
+          <td><span style="font-size:11px;color:#57606a">NT$8,865・無限里程・滿取滿還</span></td>
+        </tr>
+        <!-- 羅浮敦 -->
+        <tr>
+          <td><strong>羅浮敦群島</strong><br><span style="font-size:11px;color:#57606a">Svolvær + Hamnøy<br>10/29 ~17:00 抵</span></td>
+          <td>4 晚</td>
+          <td>✈ Widerøe EVE→TOS</td>
+          <td>11/02 <strong>14:40</strong> EVE → <strong>16:00</strong> TOS（1h20m）</td>
+          <td><a href="https://www.wideroe.no" target="_blank">wideroe.no</a></td>
+          <td><span style="font-size:11px;color:#57606a">871 NOK／人・含托運</span></td>
+        </tr>
+        <!-- 特羅姆瑟 -->
+        <tr>
+          <td rowspan="2"><strong>特羅姆瑟</strong><br><span style="font-size:11px;color:#57606a">11/02 ~16:00 飛抵</span></td>
+          <td rowspan="2">2 晚</td>
+          <td>✈ SAS SK4451</td>
+          <td>11/04 <strong>11:55</strong> TOS → <strong>14:40</strong> CPH</td>
+          <td rowspan="2"><a href="https://www.skyscanner.com.tw" target="_blank">Skyscanner</a></td>
+          <td rowspan="2"><span style="font-size:11px;color:#57606a">NT$4,208／人・含托運・4h55m</span></td>
+        </tr>
+        <tr>
+          <td>✈ SAS SK1549</td>
+          <td><strong>15:20</strong> CPH → <strong>16:50</strong> AMS</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="summary-title">完整行程總覽</div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:15%">站點</th>
+        <th style="width:16%">抵達</th>
+        <th style="width:6%">住宿</th>
+        <th style="width:16%">離開</th>
+        <th>主要活動</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background:#f0fdf4">
+        <td><strong>🇳🇱 阿姆斯特丹</strong><br><span style="font-size:11px;color:#57606a">過境，直飛 ARN</span></td>
+        <td>✈ 10/24 07:40 抵 AMS<br><span style="font-size:11px;color:#57606a">CI73 台北出發</span></td>
+        <td>—</td>
+        <td>✈ 10/24 11:10 飛 ARN</td>
+        <td>過境 AMS，當日直飛斯德哥爾摩</td>
+      </tr>
+      <tr>
+        <td><strong>🇸🇪 斯德哥爾摩</strong><br><span style="font-size:11px;color:#57606a">Stockholm</span></td>
+        <td>✈ 10/24 13:10 飛抵 ARN</td>
+        <td>2 晚</td>
+        <td>🚂 10/26 18:12 夜臥出發</td>
+        <td>舊城區（Gamla Stan）、瓦薩博物館、ABBA 博物館</td>
+      </tr>
+      <tr>
+        <td><strong>🇸🇪 阿比斯庫</strong><br><span style="font-size:11px;color:#57606a">Abisko</span></td>
+        <td>🚂 10/27 10:43 抵</td>
+        <td>2 晚</td>
+        <td>🚂 10/29 10:46 出發</td>
+        <td>北極光（STF 極光站）、Kungsleden 健行步道<br><span style="font-size:11px;color:#dc2626">⚠ 10月底以健行為主</span></td>
+      </tr>
+      <tr style="background:#fef9ec">
+        <td><strong>🇳🇴 Narvik → EVE</strong><br><span style="font-size:11px;color:#57606a">取車點</span></td>
+        <td>🚂 10/29 12:37 抵 Narvik</td>
+        <td>—</td>
+        <td>🚌 13:43 巴士 → EVE<br>🚗 EVE 取車 → Svolvær</td>
+        <td>Narvik 快速用餐；取車後自駕至 Svolvær（約 17:00 抵）</td>
+      </tr>
+      <tr>
+        <td><strong>🇳🇴 羅浮敦群島</strong><br><span style="font-size:11px;color:#57606a">Svolvær + Hamnøy</span></td>
+        <td>🚗 10/29 ~17:00 抵 Svolvær</td>
+        <td>4 晚</td>
+        <td>11/02 午前 EVE 還車<br>✈ 14:40 EVE→TOS</td>
+        <td>Svolvær 2晚（漁村、Henningsvær）；Hamnøy 1晚（Reine 峽灣）</td>
+      </tr>
+      <tr>
+        <td><strong>🇳🇴 特羅姆瑟</strong><br><span style="font-size:11px;color:#57606a">Tromsø</span></td>
+        <td>✈ 11/02 ~16:00 抵</td>
+        <td>2 晚</td>
+        <td>✈ 11/04 11:55 出發</td>
+        <td>北極光、Arctic Cathedral、狗拉雪橇、極地博物館</td>
+      </tr>
+      <tr style="background:#f0fdf4">
+        <td><strong>🇳🇱 阿姆斯特丹</strong><br><span style="font-size:11px;color:#57606a">回程前停留</span></td>
+        <td>✈ 11/04 16:50 飛抵 AMS</td>
+        <td>3 晚</td>
+        <td>✈ 11/07 10:40 出發</td>
+        <td>運河、梵谷博物館、Rijksmuseum、街頭市集</td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="padding:10px 16px;font-size:12px;color:#57606a;background:#f7f8fa;border-top:1px solid #e5e7eb;">
+    📅 <strong>歐洲在地 14 天（10/24–11/07）</strong>　｜　北歐核心 10 晚　｜　阿姆斯特丹 3 晚（回程）　｜　CI74 11/07 10:40 出發<br>
+    🚗 <strong>租車段：</strong>EVE 取車（10/29）→ EVE 還車（11/02）共 4 天，同地還車　｜　✈ Widerøe 11/02 14:40 EVE→TOS，871 NOK／人含托運
+  </div>
+</div>
+
+<footer>地圖資料 © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors　｜　Made with IBM Bob</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const map = L.map('map').setView([66.5, 19.5], 5);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap contributors', maxZoom: 13
+}).addTo(map);
+
+const CITIES = {
+  stockholm: { ll: [59.33, 18.07], name: '斯德哥爾摩', en: 'Stockholm', lat: '59.3°N', main: true,
+    desc: '<b>住宿：2 晚</b>　10/24 從 AMS 直飛 ARN（KLM 11:10→13:10）後入住。市區觀光後搭 10/26 <b>18:12</b> 夜臥火車出發（SJ Night train 94 → Boden 轉 SJ InterCity 98），10/27 <b>10:43</b> 直抵 Abisko Turiststation。票價3人：Seat Fr.2,175 / Couchette Fr.3,375 / Sleeping Fr.4,395 SEK。訂票：<a href="https://www.sj.se/en" target="_blank">sj.se</a>' },
+  abisko:    { ll: [68.35, 18.82], name: '阿比斯庫', en: 'Abisko', lat: '68.4°N', main: false,
+    desc: '<b>住宿：2 晚</b>　北極光核心景點（北極圈以北）。<br>🚂 10/27 <b>10:43</b> 夜臥直達抵達。白天健行 Kungsleden 步道，夜晚 STF 極光站觀測極光。<br>🚂 10/29 <b>10:46</b> 出發 SJ InterCity 98 → Narvik <b>12:37</b> 抵（1h51m，0 轉乘，255 SEK／3人）。訂票：<a href="https://www.sj.se/en" target="_blank">sj.se</a>' },
+  narvik:    { ll: [68.44, 17.43], name: 'Narvik → EVE', en: 'Narvik / Evenes', lat: '68.4°N', main: false,
+    desc: '<b>純轉乘點（不過夜）</b><br>🚂 SJ InterCity 98 10:46 自 Abisko → <b>12:37 抵 Narvik Station</b>。⏳ Narvik 市區午餐後搭巴士至 EVE：<br>班① 200號 <b>13:43→14:51</b>（取車後約 17:00 抵 Svolvær）<br>班② 300號 <b>15:42→16:50</b>（取車後約 18:30 抵 Svolvær）<br>🚗 EVE 取車後自駕 Svolvær（約 1.5–2h）。查詢：<a href="https://www.reisnordland.no/" target="_blank">reisnordland.no</a>' },
+  lofoten:   { ll: [68.15, 13.80], name: '羅浮敦群島', en: 'Lofoten', lat: '68.2°N', main: false,
+    desc: '<b>住宿：4 晚（Svolvær + Hamnøy）</b>　挪威最具代表性的群島風景。<br>🚗 EVE 自駕約 1.5–2h 抵 Svolvær。前 3 晚住 Svolvær，最後 1 晚移住 Hamnøy（Reine 峽灣）。11/02 上午玩完後開回 EVE 同地還車（約 1.5–2h）→ ✈ Widerøe 14:40 飛 TOS（871 NOK／人，含托運）。' },
+  tromso:    { ll: [69.65, 18.96], name: '特羅姆瑟', en: 'Tromsø', lat: '69.7°N', main: true,
+    desc: '<b>住宿：2 晚</b>　行程終點，北極圈以北約 340 km。<br>✈ Widerøe EVE→TOS 11/02 14:40 出發，約 16:00 抵達。北極光、極地博物館、狗拉雪橇。✈ <b>11/04 11:55</b> SAS SK4451 TOS→CPH→AMS（16:50 抵，4h55m，NT$4,208／人，含托運）。訂票：<a href="https://www.skyscanner.com.tw" target="_blank">Skyscanner</a>' },
+};
+
+const ROUTES = {
+  r1: { color: '#3b82d4', dash: null, w: 5, offset: 0, stops: ['stockholm','abisko','narvik','lofoten','tromso'] },
+};
+
+const polylines = {};
+const markers = {};
+const leftSet = new Set(['narvik','abisko','lofoten','tromso']);
+
+Object.entries(CITIES).forEach(([id, c]) => {
+  const radius = c.main ? 10 : 7;
+  const m = L.circleMarker(c.ll, {
+    radius, fillColor: '#e05c3a', color: '#fff', weight: 2, fillOpacity: 1
+  }).addTo(map);
+  const side = leftSet.has(id) ? 'left' : 'right';
+  const offset = side === 'left' ? [-14, 0] : [14, 0];
+  L.tooltip({ permanent: true, direction: side, offset, className: 'city-label' })
+    .setContent(`<b>${c.name}</b> <span style="color:#57606a;font-size:11px">${c.en} · ${c.lat}</span>`)
+    .addTo(map)
+    .setLatLng(c.ll);
+  m.on('click', () => {
+    document.getElementById('info-panel').innerHTML =
+      `<h3>${c.name} <span style="font-weight:400;font-size:12px;color:#57606a">${c.en} · ${c.lat}</span></h3><p style="margin-top:6px">${c.desc}</p>`;
+  });
+  markers[id] = m;
+});
+
+Object.entries(ROUTES).forEach(([id, r]) => {
+  const lls = r.stops.map(s => CITIES[s].ll);
+  const pl = L.polyline(lls, {
+    color: r.color, weight: r.w, opacity: 0.85,
+    dashArray: r.dash, offset: r.offset
+  }).addTo(map);
+  polylines[id] = pl;
+});
+</script>
+
+</body>
+</html>
