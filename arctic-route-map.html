@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="created" content="2026-08-22 21:00:09 +0800">
-<meta name="updated" content="2026-09-05 22:42:06 +0800">
+<meta name="updated" content="2026-09-08 11:35:45 +0800">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>北歐路線方案地圖</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -240,14 +240,14 @@
         <tr>
           <td rowspan="2"><strong>特羅姆瑟</strong><br><span style="font-size:11px;color:#57606a">11/02 ~16:00 飛抵</span></td>
           <td rowspan="2">2 晚</td>
-          <td>✈ SAS SK4451</td>
-          <td>11/04 <strong>11:55</strong> TOS → <strong>14:40</strong> CPH</td>
+          <td>✈ KLM KL8543（北歐航空承運）</td>
+          <td>11/04 <strong>08:45</strong> TOS → <strong>10:45</strong> OSL</td>
           <td rowspan="2" style="vertical-align:middle;text-align:center;"><a href="https://www.skyscanner.com.tw" target="_blank">Skyscanner</a></td>
-          <td rowspan="2"><span style="font-size:11px;color:#57606a">NT$4,208／人・含托運・4h55m</span></td>
+          <td rowspan="2"><span style="font-size:11px;color:#57606a">NT$6,743／人・含托運・5h45m</span></td>
         </tr>
         <tr>
-          <td>✈ SAS SK1549</td>
-          <td><strong>15:20</strong> CPH → <strong>16:50</strong> AMS</td>
+          <td>✈ KLM KL1200</td>
+          <td><strong>12:35</strong> OSL → <strong>14:30</strong> AMS</td>
         </tr>
       </tbody>
     </table>
@@ -304,12 +304,12 @@
         <td><strong>🇳🇴 特羅姆瑟</strong><br><span style="font-size:11px;color:#57606a">Tromsø</span></td>
         <td>✈ 11/02 ~16:00 抵</td>
         <td>2 晚</td>
-        <td>✈ 11/04 11:55 出發</td>
+        <td>✈ 11/04 08:45 出發</td>
         <td>北極光、Arctic Cathedral、狗拉雪橇、極地博物館</td>
       </tr>
       <tr style="background:#f0fdf4">
         <td><strong>🇳🇱 阿姆斯特丹</strong><br><span style="font-size:11px;color:#57606a">回程前停留</span></td>
-        <td>✈ 11/04 16:50 飛抵 AMS</td>
+        <td>✈ 11/04 14:30 飛抵 AMS</td>
         <td>3 晚</td>
         <td>✈ 11/07 10:40 出發</td>
         <td>運河、梵谷博物館、Rijksmuseum、街頭市集</td>
@@ -327,8 +327,9 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const map = L.map('map').setView([65.5, 17.0], 4);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '© OpenStreetMap contributors', maxZoom: 13
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+  attribution: 'Tiles © Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
+  maxZoom: 17
 }).addTo(map);
 
 const CITIES = {
@@ -341,7 +342,7 @@ const CITIES = {
   lofoten:   { ll: [68.15, 13.80], name: '羅浮敦群島', en: 'Lofoten', lat: '68.2°N', main: false,
     desc: '<b>住宿：4 晚（Svolvær + Hamnøy）</b>　挪威最具代表性的群島風景。<br>🚗 EVE 自駕約 1.5–2h 抵 Svolvær。前 3 晚住 Svolvær，最後 1 晚移住 Hamnøy（Reine 峽灣）。11/02 上午玩完後開回 EVE 同地還車（約 1.5–2h）→ ✈ Widerøe 14:40 飛 TOS（871 NOK／人，含托運）。' },
   tromso:    { ll: [69.65, 18.96], name: '特羅姆瑟', en: 'Tromsø', lat: '69.7°N', main: true,
-    desc: '<b>住宿：2 晚</b>　行程終點，北極圈以北約 340 km。<br>✈ Widerøe EVE→TOS 11/02 14:40 出發，約 16:00 抵達。北極光、極地博物館、狗拉雪橇。✈ <b>11/04 11:55</b> SAS SK4451 TOS→CPH→AMS（16:50 抵，4h55m，NT$4,208／人，含托運）。訂票：<a href="https://www.skyscanner.com.tw" target="_blank">Skyscanner</a>' },
+    desc: '<b>住宿：2 晚</b>　行程終點，北極圈以北約 340 km。<br>✈ Widerøe EVE→TOS 11/02 14:40 出發，約 16:00 抵達。北極光、極地博物館、狗拉雪橇。✈ <b>11/04 08:45</b> KLM KL8543 TOS→OSL，轉乘 KL1200（12:35）→ AMS，14:30 抵達（5h45m，NT$6,743／人，含托運）。訂票：<a href="https://www.skyscanner.com.tw" target="_blank">Skyscanner</a>' },
 };
 
 const ROUTES = {
