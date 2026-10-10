@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="updated" content="2026-10-10 18:24:02 +0800">
+<meta name="created" content="2026-10-10 18:20:49 +0800">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>北歐旅程：各國細節</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; font-size: 14px; background: #f7f8fa; color: #1f2328; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 24px 48px; }
+  h1 { font-size: 18px; font-weight: 700; padding: 20px 24px 4px; max-width: 1280px; margin: 0 auto; }
+  .nav-link { display: inline-block; margin: 8px 24px 12px; padding: 6px 14px; border-radius: 6px; border: 1px solid #3b82d4; background: #eff6ff; color: #3b82d4; font-size: 13px; font-weight: 600; text-decoration: none; }
+  .nav-bar { max-width: 1280px; margin: 0 auto; }
+  .summary-title { font-size: 15px; font-weight: 700; padding-bottom: 10px; border-bottom: 1px solid #e5e7eb; margin-bottom: 14px; }
+  .tag { display: inline-block; font-size: 10px; font-weight: 600; padding: 1px 5px; border-radius: 3px; margin-left: 3px; }
+  .tag-w { background: #fef3c7; color: #92400e; }
+  footer { margin-top: 28px; padding: 12px 20px; border-top: 1px solid #e5e7eb; text-align: center; font-size: 11px; color: #57606a; background: #f7f8fa; }
+
+  /* 各國頁籤＋看板 */
+  .tk-tabs { display: flex; gap: 4px; border-bottom: 2px solid #e5e7eb; margin-bottom: 14px; flex-wrap: wrap; }
+  .tk-tab { padding: 8px 16px; cursor: pointer; font-size: 13px; font-weight: 600; color: #57606a; border: none; background: none; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+  .tk-tab.on { color: #3b82d4; border-bottom-color: #3b82d4; }
+  .tk-pane { display: none; } .tk-pane.on { display: block; }
+  .tk-board { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(180px, 1fr); gap: 10px; overflow-x: auto; padding-bottom: 8px; }
+  .tk-col { background: #eef2f7; border-radius: 8px; padding: 8px; display: flex; flex-direction: column; gap: 8px; align-self: start; }
+  .tk-col-h { font-size: 12px; font-weight: 700; padding: 0 2px; }
+  .tk-m { display: block; font-size: 11px; font-weight: 400; color: #57606a; }
+  .tk-card { background: #fff; border: 1px solid #e5e7eb; border-left: 4px solid #16a34a; border-radius: 8px; padding: 8px 12px; font-size: 12px; line-height: 1.6; }
+  .tk-card b { font-size: 13px; }
+  .tk-card .tk-m { display: inline; }
+  .tk-backbar { margin-top: 14px; background: #f3f4f6; border: 1px dashed #9ca3af; border-radius: 8px; padding: 10px 12px; }
+  .tk-backbar .tk-col-h { margin-bottom: 8px; }
+  .tk-backbar .tk-col-h .tk-m { display: block; }
+  .tk-cnt { font-size: 11px; font-weight: 600; color: #57606a; background: #e5e7eb; border-radius: 999px; padding: 1px 8px; margin-left: 4px; }
+  .tk-filters { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+  .tk-f { padding: 3px 10px; border-radius: 999px; border: 1px solid #d0d7de; background: #fff; cursor: pointer; font-size: 11px; color: #57606a; }
+  .tk-f.on { background: #1f2328; color: #fff; border-color: #1f2328; }
+  .tk-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tk-card.tk-back { border-left: 4px dashed #9ca3af; background: #fafafa; color: #57606a; min-width: 170px; }
+  .tk-cat { display: inline-block; font-size: 10px; font-weight: 600; background: #e5e7eb; color: #57606a; border-radius: 3px; padding: 0 5px; margin-right: 5px; }
+  .tk-map { display: inline-block; margin-top: 3px; margin-right: 8px; font-size: 11px; color: #3b82d4; text-decoration: none; }
+  .tk-map:hover { text-decoration: underline; }
+  /* 拖曳與新增 */
+  .tk-card { position: relative; cursor: grab; }
+  .tk-col .tk-cat { display: none; }
+  .tk-col { min-height: 60px; }
+  .tk-ghost { opacity: .35; }
+  .tk-del { position: absolute; top: 4px; right: 6px; border: none; background: none; color: #9ca3af; cursor: pointer; font-size: 12px; }
+  .tk-del:hover { color: #dc2626; }
+  .tk-tools { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .tk-add { padding: 3px 10px; border-radius: 6px; border: 1px solid #3b82d4; background: #eff6ff; color: #3b82d4; font-size: 11px; font-weight: 600; cursor: pointer; }
+  .tk-form { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; width: 100%; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px; }
+  .tk-form[hidden] { display: none; }
+  .tk-form input[type=text] { padding: 4px 8px; border: 1px solid #d0d7de; border-radius: 6px; font-size: 12px; }
+  .tk-form select { padding: 4px 8px; border: 1px solid #d0d7de; border-radius: 6px; font-size: 12px; background: #fff; }
+  .tk-form label { font-size: 11px; color: #57606a; display: inline-flex; align-items: center; gap: 4px; }
+  .tk-form button { padding: 4px 12px; border-radius: 6px; border: 1px solid #d0d7de; background: #fff; font-size: 12px; cursor: pointer; }
+  .tk-form button[type=submit] { background: #3b82d4; border-color: #3b82d4; color: #fff; font-weight: 600; }
+  .tk-reset { margin-left: auto; align-self: center; padding: 3px 10px; border-radius: 6px; border: 1px solid #d0d7de; background: #fff; color: #57606a; font-size: 11px; cursor: pointer; }
+  .tk-hint { font-size: 12px; color: #57606a; margin: -4px 0 12px; }
+  .tk-empty { background: #fff; border: 1px dashed #bbb; border-radius: 6px; padding: 12px; color: #57606a; font-size: 12px; text-align: center; }
+
+  /* 手機版 */
+  @media (max-width: 640px) {
+    .wrap { padding: 0 12px 32px; }
+    h1 { padding: 16px 12px 4px; }
+    .nav-link { margin: 8px 12px 10px; }
+    .tk-tab { padding: 8px 12px; flex: 1; text-align: center; }
+    .tk-reset { margin: 6px 0 0 auto; }
+    .tk-board { grid-auto-columns: 82vw; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+    .tk-col { scroll-snap-align: start; }
+    .tk-card.tk-back { min-width: 0; flex: 1 1 calc(50% - 8px); }
+    .tk-form { flex-direction: column; align-items: stretch; }
+    .tk-form input[type=text], .tk-form select { font-size: 16px; width: 100%; }
+    .tk-hint { margin-top: 0; }
+  }
+</style>
+</head>
+<body>
+<h1>各國細節：每日行程與備用清單</h1>
+<div class="nav-bar"><a class="nav-link" href="arctic-route-map.html">← 回到路線與交通總表</a></div>
+
+<div class="wrap">
+  <p class="tk-hint">卡牌可以拖曳：換天、改順序，或在「每日行程」與「備用清單」之間移動。變更會自動存在這個瀏覽器裡。</p>
+  <div class="tk-tabs">
+    <button class="tk-tab on" data-pane="tk-se">🇸🇪 瑞典</button>
+    <button class="tk-tab" data-pane="tk-no">🇳🇴 挪威</button>
+    <button class="tk-tab" data-pane="tk-nl">🇳🇱 荷蘭</button>
+  </div>
+  <div id="tk-se" class="tk-pane on">
+    <div class="tk-board">
+      <div class="tk-col"><div class="tk-col-h">10/24<span class="tk-m">斯德哥爾摩</span></div><div class="tk-card"><b>🛒 Willys ＋ Lidl</b><br><span class="tk-m">採買</span></div><div class="tk-card"><b>🛍 逛街</b></div><div class="tk-card"><b>📷 Fotografiska</b><br><span class="tk-m">備案</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Fotografiska+Stockholm" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div></div>
+      <div class="tk-col"><div class="tk-col-h">10/25<span class="tk-m">斯德哥爾摩</span></div><div class="tk-card"><b>🏛 市政廳</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Stockholm+City+Hall" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🏘 老城區</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Gamla+Stan+Stockholm" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🥐 Skeppsbro Bakery</b><br><span class="tk-m">肉桂捲</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Skeppsbro+Bakery+Stockholm" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🌇 Monteliusvägen</b><br><span class="tk-m">Skinnarviksberget 看日落</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Monteliusv%C3%A4gen+Stockholm" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🥩 Restaurang AG</b><br><span class="tk-m">entrecôte／porterhouse</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Restaurang+AG+Stockholm" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div></div>
+      <div class="tk-col"><div class="tk-col-h">10/26<span class="tk-m">斯德哥爾摩</span></div><div class="tk-card"><b>🧳 中央車站附近寄放行李</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Stockholm+Central+Station" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🍲 Kajsas Fisk</b><br><span class="tk-m">魚湯 11:00</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Kajsas+Fisk+Stockholm" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>⚓ Vasa Museum</b><br><span class="tk-m">瓦薩沉船博物館</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Vasa+Museum+Stockholm" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🏡 Skansen</b><br><span class="tk-m">斯堪森露天博物館</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Skansen+Stockholm" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🚂 夜臥火車</b><br><span class="tk-m">18:12 出發</span></div></div>
+      <div class="tk-col"><div class="tk-col-h">10/27<span class="tk-m">阿比斯庫</span></div><div class="tk-card"><b>🥾 阿比斯庫峽谷步道</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Abisko+Canyon" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🌊 Njakajaure 或湖岸步道</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Njakajaure+Abisko" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🛒 採買</b></div></div>
+      <div class="tk-col"><div class="tk-col-h">10/28<span class="tk-m">阿比斯庫</span></div><div class="tk-card"><b>🥾 國王步道 Kungsleden</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Kungsleden+Abisko" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🚡 纜車</b> <span class="tag tag-w">待確認</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Aurora+Sky+Station+Abisko" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div></div>
+    </div>
+    <div class="tk-backbar"><div class="tk-col-h">💤 備用清單 <span class="tk-cnt">18</span><span class="tk-m">沒排進哪一天，想去時再挑</span></div>
+      <div class="tk-filters"><button class="tk-f on" data-f="all">全部</button><button class="tk-f" data-f="景點">景點</button><button class="tk-f" data-f="採買">採買</button><button class="tk-f" data-f="伴手禮">伴手禮</button><button class="tk-f" data-f="超市食材">超市食材</button></div>
+      <div class="tk-row"><div class="tk-card tk-back" data-cat="景點"><span class="tk-cat">景點</span><b>Kungsträdgården</b><br><span class="tk-m">國王花園</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Kungstr%C3%A4dg%C3%A5rden+Stockholm" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="景點"><span class="tk-cat">景點</span><b>Drottninggatan</b><br><span class="tk-m">皇后街</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Drottninggatan+Stockholm" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="景點"><span class="tk-cat">景點</span><b>ICEBAR Stockholm</b><br><span class="tk-m">冰酒吧</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=ICEBAR+Stockholm" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="景點"><span class="tk-cat">景點</span><b>Avicii Experience</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Avicii+Experience+Stockholm" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="採買"><span class="tk-cat">採買</span><b>Alewalds Quality Outlet Men</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Alewalds+Quality+Outlet+Stockholm" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="採買"><span class="tk-cat">採買</span><b>IKEA</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=IKEA+Stockholm" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="伴手禮"><span class="tk-cat">伴手禮</span><b>Designtorget</b><br><span class="tk-m">設計感小物</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Designtorget+Stockholm" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="伴手禮"><span class="tk-cat">伴手禮</span><b>Swedish handicraft</b><br><span class="tk-m">手工藝品</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Swedish+handicraft+Stockholm" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="超市食材"><span class="tk-cat">超市食材</span><b>Kalles Kaviar</b><br><span class="tk-m">管狀魚子醬</span></div><div class="tk-card tk-back" data-cat="超市食材"><span class="tk-cat">超市食材</span><b>Kexchoklad</b><br><span class="tk-m">巧克力威化餅</span></div><div class="tk-card tk-back" data-cat="超市食材"><span class="tk-cat">超市食材</span><b>Marabou</b><br><span class="tk-m">巧克力</span></div><div class="tk-card tk-back" data-cat="超市食材"><span class="tk-cat">超市食材</span><b>Arla</b><br><span class="tk-m">牛奶</span></div><div class="tk-card tk-back" data-cat="超市食材"><span class="tk-cat">超市食材</span><b>Daim</b><br><span class="tk-m">巧克力</span></div><div class="tk-card tk-back" data-cat="超市食材"><span class="tk-cat">超市食材</span><b>Lingonsylt</b><br><span class="tk-m">越橘果醬</span></div><div class="tk-card tk-back" data-cat="超市食材"><span class="tk-cat">超市食材</span><b>Estrella / OLW 洋芋片</b><br><span class="tk-m">Dill（蒔蘿）、Sour Cream &amp; Onion（酸奶油洋蔥）口味</span></div><div class="tk-card tk-back" data-cat="伴手禮"><span class="tk-cat">伴手禮</span><b>Dala 馬</b><br><span class="tk-m">紅色</span></div><div class="tk-card tk-back" data-cat="伴手禮"><span class="tk-cat">伴手禮</span><b>Fjällräven Kånken 北極狐背包</b><br><span class="tk-m">Kånken Classic；Fjällräven Brand Corner、Naturkompaniet</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Fj%C3%A4llr%C3%A4ven+Brand+Corner+Stockholm" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="伴手禮"><span class="tk-cat">伴手禮</span><b>Lovikka 羊毛手套</b><br><span class="tk-m">Swedish handicraft／Skansenbutiken</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Skansenbutiken+Stockholm" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div></div>
+    </div>
+  </div>
+  <div id="tk-no" class="tk-pane">
+    <div class="tk-board">
+      <div class="tk-col"><div class="tk-col-h">10/29<span class="tk-m">羅浮敦</span></div><div class="tk-card"><b>🚗 Svolvær</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Svolv%C3%A6r" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🏖 Haukland Beach ＋ Uttakleiv Beach</b><br><span class="tk-m">Mannen 步道</span> <span class="tag tag-w">待確認</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Haukland+Beach" target="_blank" rel="noopener noreferrer">📍 Haukland</a> <a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Uttakleiv+Beach" target="_blank" rel="noopener noreferrer">📍 Uttakleiv</a></div><div class="tk-card"><b>🏘 Nusfjord</b><br><span class="tk-m">最古老且保存最完整的漁村之一</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Nusfjord" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div></div>
+      <div class="tk-col"><div class="tk-col-h">10/30<span class="tk-m">羅浮敦（南島）</span></div><div class="tk-card"><b>🥾 Reinebringen 步道</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Reinebringen" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🏠 Hamnøy</b><br><span class="tk-m">紅色漁屋</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Hamn%C3%B8y" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🐟 Sakrisøy</b><br><span class="tk-m">黃色漁屋</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Sakris%C3%B8y" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🍔 Anita's Sjømat</b><br><span class="tk-m">魚漢堡、煙燻鮭魚</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Anita%27s+Sj%C3%B8mat+Sakris%C3%B8y" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div></div>
+      <div class="tk-col"><div class="tk-col-h">10/31<span class="tk-m">羅浮敦（南島）</span></div><div class="tk-card"><b>🥐 Bakeriet i Å</b><br><span class="tk-m">肉桂捲 kanelboller</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Bakeriet+i+%C3%85+Lofoten" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🏛 挪威漁村博物館</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Norwegian+Fishing+Village+Museum+%C3%85" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🏖 Kvalvika Beach</b><br><span class="tk-m">選配</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Kvalvika+Beach" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div></div>
+      <div class="tk-col"><div class="tk-col-h">11/1<span class="tk-m">羅浮敦（南島）</span></div><div class="tk-card"><b>🏖 Ramberg Beach</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Ramberg+Beach" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🏘 Henningsvær</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Henningsv%C3%A6r" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🚗 Svolvær</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Svolv%C3%A6r" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div></div>
+      <div class="tk-col"><div class="tk-col-h">11/2<span class="tk-m">特羅姆瑟</span></div><div class="tk-card"><b>✈ 14:40 EVE→TOS</b><br><span class="tk-m">12:30 EVE 還車</span></div><div class="tk-card"><b>🛒 採買</b></div><div class="tk-card"><b>🌭 Raketten Bar &amp; Pølse</b><br><span class="tk-m">馴鹿肉香腸堡</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Raketten+Bar+%26+P%C3%B8lse+Troms%C3%B8" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🍟 McDonald's Tromsø</b><br><span class="tk-m">明信片</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=McDonald%27s+Troms%C3%B8" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card"><b>🚡 纜車</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Fjellheisen+Troms%C3%B8" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div></div>
+      <div class="tk-col"><div class="tk-col-h">11/3<span class="tk-m">特羅姆瑟</span></div><div class="tk-card"><b>🐋 賞鯨</b><br><span class="tk-m">16:30</span></div><div class="tk-card"><b>🧖 桑拿</b><br><span class="tk-m">Pust</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Pust+Troms%C3%B8" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div></div>
+    </div>
+    <div class="tk-backbar"><div class="tk-col-h">💤 備用清單 <span class="tk-cnt">12</span><span class="tk-m">沒排進哪一天，想去時再挑</span></div>
+      <div class="tk-filters"><button class="tk-f on" data-f="all">全部</button><button class="tk-f" data-f="採買">採買</button><button class="tk-f" data-f="景點">景點</button><button class="tk-f" data-f="超市食材">超市食材</button><button class="tk-f" data-f="必吃">必吃</button></div>
+      <div class="tk-row"><div class="tk-card tk-back" data-cat="採買"><span class="tk-cat">採買</span><b>Rema 1000 ／ Kiwi</b><br><span class="tk-m">Svolvær、Leknes（Rema 1000 最便宜）</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Rema+1000+Svolv%C3%A6r" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="採買"><span class="tk-cat">採買</span><b>Joker</b><br><span class="tk-m">Sørvågen</span> <span class="tag tag-w">星期日休</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Joker+S%C3%B8rv%C3%A5gen" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="景點"><span class="tk-cat">景點</span><b>Å 公路盡頭</b><br><span class="tk-m">保存最完整的傳統漁村</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=%C3%85+i+Lofoten" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="景點"><span class="tk-cat">景點</span><b>乾鱈魚博物館</b><br><span class="tk-m">Tørrfiskmuseum</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Lofoten+T%C3%B8rrfiskmuseum" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="超市食材"><span class="tk-cat">超市食材</span><b>Grandiosa</b><br><span class="tk-m">冷凍披薩</span></div><div class="tk-card tk-back" data-cat="超市食材"><span class="tk-cat">超市食材</span><b>Kvikk Lunsj</b><br><span class="tk-m">巧克力棒</span></div><div class="tk-card tk-back" data-cat="超市食材"><span class="tk-cat">超市食材</span><b>Kims 洋芋片</b><br><span class="tk-m">挪威國民品牌</span></div><div class="tk-card tk-back" data-cat="超市食材"><span class="tk-cat">超市食材</span><b>Freia 巧克力</b><br><span class="tk-m">Fruktnøtt</span></div><div class="tk-card tk-back" data-cat="超市食材"><span class="tk-cat">超市食材</span><b>Smash!</b><br><span class="tk-m">巧克力</span></div><div class="tk-card tk-back" data-cat="超市食材"><span class="tk-cat">超市食材</span><b>TINE 米布丁</b></div><div class="tk-card tk-back" data-cat="必吃"><span class="tk-cat">必吃</span><b>Kvæfjordkake／Verdens beste</b><br><span class="tk-m">國民蛋糕</span></div><div class="tk-card tk-back" data-cat="必吃"><span class="tk-cat">必吃</span><b>Fårikål</b><br><span class="tk-m">羊肉燉高麗菜</span></div></div>
+    </div>
+  </div>
+  <div id="tk-nl" class="tk-pane">
+    <div class="tk-empty">11/04–11/07 尚未排定每日行程，下方皆為備用。</div>
+    <div class="tk-backbar"><div class="tk-col-h">💤 備用清單 <span class="tk-cnt">7</span><span class="tk-m">沒排進哪一天，想去時再挑</span></div>
+      <div class="tk-filters"><button class="tk-f on" data-f="all">全部</button><button class="tk-f" data-f="景點">景點</button><button class="tk-f" data-f="採買">採買</button></div>
+      <div class="tk-row"><div class="tk-card tk-back" data-cat="景點"><span class="tk-cat">景點</span><b>風車村</b><br><span class="tk-m">推測 Zaanse Schans</span> <span class="tag tag-w">待確認</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Zaanse+Schans" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="景點"><span class="tk-cat">景點</span><b>羊角村</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Giethoorn" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="景點"><span class="tk-cat">景點</span><b>梵谷博物館</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Van+Gogh+Museum+Amsterdam" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="景點"><span class="tk-cat">景點</span><b>Vondelpark</b><br><span class="tk-m">公園</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Vondelpark+Amsterdam" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="景點"><span class="tk-cat">景點</span><b>A'DAM Lookout</b><br><span class="tk-m">俯瞰阿姆斯特丹全景</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=A%27DAM+Lookout+Amsterdam" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="景點"><span class="tk-cat">景點</span><b>運河遊船</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Amsterdam+canal+cruise" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="採買"><span class="tk-cat">採買</span><b>Albert Cuypmarkt</b><br><span class="tk-m">市集</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Albert+Cuypmarkt+Amsterdam" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Made with IBM Bob</footer>
+
+<script src="https://unpkg.com/sortablejs@1.15.7/Sortable.min.js" integrity="sha384-DgmC6Xe2bSN2WjTDXzWYbUbxyhNP+NNkGDR/g78pCXV7E7rcVTGxVg0uIVCUUcBc" crossorigin="anonymous"></script>
+<script>
+document.querySelectorAll('.tk-tab').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.tk-tab').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('.tk-pane').forEach(p => p.classList.toggle('on', p.id === b.dataset.pane));
+}));
+
+(function () {
+  const KEY = 'arctic-plan-v1';
+  const COUNTRY = { 'tk-se': 'Sweden', 'tk-no': 'Norway', 'tk-nl': 'Netherlands' };
+  const DEFAULT_CATS = ['景點', '吃', '伴手禮', '超市食材', '採買', '必吃', '其他'];
+  const MAPS = 'https://www.google.com/maps/search/?api=1&query=';
+  let state = { v: 1, panes: {} };
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (raw) { const parsed = JSON.parse(raw); if (parsed && parsed.v === 1 && parsed.panes) state = parsed; }
+  } catch (e) { /* 無法讀取就用預設 */ }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* 儲存失敗就略過 */ } }
+  function paneState(id) {
+    const p = state.panes[id] || (state.panes[id] = {});
+    if (!Array.isArray(p.custom)) p.custom = [];
+    if (!Array.isArray(p.cols)) p.cols = [];
+    if (!Array.isArray(p.back)) p.back = [];
+    return p;
+  }
+
+  function ensureCat(card, cat) {
+    card.dataset.cat = cat;
+    let badge = card.querySelector(':scope > .tk-cat');
+    if (!badge) {
+      badge = document.createElement('span');
+      badge.className = 'tk-cat';
+      card.insertBefore(badge, card.firstChild);
+    }
+    badge.textContent = cat;
+  }
+
+  function buildCard(pid, c) {
+    const card = document.createElement('div');
+    card.className = 'tk-card tk-back';
+    card.dataset.id = c.id;
+    card.dataset.custom = '1';
+    ensureCat(card, c.cat);
+    const title = document.createElement('b');
+    title.textContent = c.title;
+    card.appendChild(title);
+    if (c.note) {
+      card.appendChild(document.createElement('br'));
+      const note = document.createElement('span');
+      note.className = 'tk-m';
+      note.textContent = c.note;
+      card.appendChild(note);
+    }
+    if (c.map) {
+      card.appendChild(document.createElement('br'));
+      const a = document.createElement('a');
+      a.className = 'tk-map';
+      a.href = MAPS + encodeURIComponent(c.title + ' ' + (COUNTRY[pid] || ''));
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.textContent = '📍 Google Maps';
+      card.appendChild(a);
+    }
+    const del = document.createElement('button');
+    del.type = 'button';
+    del.className = 'tk-del';
+    del.title = '刪除這張自訂卡牌';
+    del.textContent = '✕';
+    card.appendChild(del);
+    return card;
+  }
+
+  function initPane(pid) {
+    const pane = document.getElementById(pid);
+    if (!pane) return;
+    const ps = paneState(pid);
+    const cols = Array.from(pane.querySelectorAll('.tk-col'));
+    const row = pane.querySelector('.tk-row');
+    const backbar = pane.querySelector('.tk-backbar');
+    let filter = 'all';
+
+    const byId = new Map();
+    const seen = {};
+    pane.querySelectorAll('.tk-card').forEach(card => {
+      const t = card.querySelector('b').textContent.trim();
+      seen[t] = (seen[t] || 0) + 1;
+      const id = pid + '|' + t + '#' + seen[t];
+      card.dataset.id = id;
+      byId.set(id, card);
+      if (!card.dataset.cat) ensureCat(card, '其他');
+    });
+
+    ps.custom.forEach(c => { const el = buildCard(pid, c); byId.set(c.id, el); row.appendChild(el); });
+    ps.cols.forEach((ids, i) => {
+      if (!cols[i] || !Array.isArray(ids)) return;
+      ids.forEach(id => { const el = byId.get(id); if (el) cols[i].appendChild(el); });
+    });
+    ps.back.forEach(id => { const el = byId.get(id); if (el) row.appendChild(el); });
+
+    function renderFilters() {
+      const box = pane.querySelector('.tk-filters');
+      const cats = [];
+      row.querySelectorAll('.tk-card').forEach(c => { if (!cats.includes(c.dataset.cat)) cats.push(c.dataset.cat); });
+      if (filter !== 'all' && !cats.includes(filter)) filter = 'all';
+      box.textContent = '';
+      ['all'].concat(cats).forEach(f => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'tk-f' + (f === filter ? ' on' : '');
+        b.dataset.f = f;
+        b.textContent = f === 'all' ? '全部' : f;
+        b.addEventListener('click', () => { filter = f; renderFilters(); });
+        box.appendChild(b);
+      });
+      row.querySelectorAll('.tk-card').forEach(c => { c.style.display = (filter === 'all' || c.dataset.cat === filter) ? '' : 'none'; });
+    }
+    function sync() {
+      pane.querySelectorAll('.tk-col .tk-card').forEach(c => { c.classList.remove('tk-back'); c.style.display = ''; });
+      row.querySelectorAll('.tk-card').forEach(c => c.classList.add('tk-back'));
+      pane.querySelector('.tk-cnt').textContent = row.querySelectorAll('.tk-card').length;
+      renderFilters();
+    }
+    function persist() {
+      ps.cols = cols.map(col => Array.from(col.querySelectorAll('.tk-card')).map(c => c.dataset.id));
+      ps.back = Array.from(row.querySelectorAll('.tk-card')).map(c => c.dataset.id);
+      save();
+    }
+
+    // 新增表單
+    const tools = document.createElement('div');
+    tools.className = 'tk-tools';
+    const addBtn = document.createElement('button');
+    addBtn.type = 'button';
+    addBtn.className = 'tk-add';
+    addBtn.textContent = '＋ 新增項目';
+    const form = document.createElement('form');
+    form.className = 'tk-form';
+    form.hidden = true;
+    const name = document.createElement('input');
+    name.type = 'text'; name.required = true; name.maxLength = 60; name.placeholder = '名稱（必填）';
+    const note = document.createElement('input');
+    note.type = 'text'; note.maxLength = 100; note.placeholder = '備註（選填）';
+    const cat = document.createElement('select');
+    cat.title = '分類';
+    const catSet = new Set(DEFAULT_CATS);
+    pane.querySelectorAll('.tk-row .tk-card').forEach(c => { if (c.dataset.cat) catSet.add(c.dataset.cat); });
+    Array.from(catSet).forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; cat.appendChild(o); });
+    const custom = document.createElement('option');
+    custom.value = '__custom__'; custom.textContent = '＋ 自訂分類…';
+    cat.appendChild(custom);
+    const catNew = document.createElement('input');
+    catNew.type = 'text'; catNew.maxLength = 12; catNew.placeholder = '新分類名稱'; catNew.hidden = true;
+    cat.addEventListener('change', () => { catNew.hidden = cat.value !== '__custom__'; catNew.required = !catNew.hidden; if (!catNew.hidden) catNew.focus(); });
+    const mapLabel = document.createElement('label');
+    const mapChk = document.createElement('input');
+    mapChk.type = 'checkbox'; mapChk.checked = true;
+    mapLabel.appendChild(mapChk);
+    mapLabel.appendChild(document.createTextNode('附 Google Maps 連結'));
+    const ok = document.createElement('button');
+    ok.type = 'submit'; ok.textContent = '新增';
+    const cancel = document.createElement('button');
+    cancel.type = 'button'; cancel.textContent = '取消';
+    [name, note, cat, catNew, mapLabel, ok, cancel].forEach(el => form.appendChild(el));
+    tools.appendChild(addBtn);
+    tools.appendChild(form);
+    const filtersBox = pane.querySelector('.tk-filters');
+    backbar.insertBefore(tools, filtersBox);
+
+    addBtn.addEventListener('click', () => { form.hidden = !form.hidden; if (!form.hidden) name.focus(); });
+    cancel.addEventListener('click', () => { form.hidden = true; });
+    form.addEventListener('submit', ev => {
+      ev.preventDefault();
+      const title = name.value.trim();
+      const category = (cat.value === '__custom__' ? catNew.value : cat.value).trim();
+      if (!title || !category) return;
+      const c = {
+        id: 'u' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        title: title, note: note.value.trim(), cat: category, map: mapChk.checked
+      };
+      ps.custom.push(c);
+      row.appendChild(buildCard(pid, c));
+      sync();
+      persist();
+      if (!Array.from(cat.options).some(o => o.value === category)) {
+        const o = document.createElement('option'); o.value = category; o.textContent = category;
+        cat.insertBefore(o, custom);
+      }
+      cat.value = category; catNew.value = ''; catNew.hidden = true; catNew.required = false;
+      name.value = ''; note.value = ''; name.focus();
+    });
+    pane.addEventListener('click', ev => {
+      const del = ev.target.closest('.tk-del');
+      if (!del) return;
+      const card = del.closest('.tk-card');
+      ps.custom = ps.custom.filter(c => c.id !== card.dataset.id);
+      card.remove();
+      sync();
+      persist();
+    });
+
+    if (typeof Sortable !== 'undefined') {
+      const opts = {
+        group: pid, draggable: '.tk-card', animation: 150, ghostClass: 'tk-ghost',
+        ignore: 'a, img, button', delay: 150, delayOnTouchOnly: true,
+        onEnd: () => { sync(); persist(); }
+      };
+      cols.forEach(c => Sortable.create(c, opts));
+      Sortable.create(row, opts);
+    }
+    sync();
+  }
+
+  ['tk-se', 'tk-no', 'tk-nl'].forEach(initPane);
+
+  const tabs = document.querySelector('.tk-tabs');
+  const reset = document.createElement('button');
+  reset.type = 'button';
+  reset.className = 'tk-reset';
+  reset.textContent = '↺ 還原預設';
+  reset.addEventListener('click', () => {
+    if (confirm('要清除你拖曳與新增的所有變更，還原成預設行程嗎？')) {
+      try { localStorage.removeItem(KEY); } catch (e) { /* 略過 */ }
+      location.reload();
+    }
+  });
+  tabs.appendChild(reset);
+})();
+</script>
+
+</body>
+</html>

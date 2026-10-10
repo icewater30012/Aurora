@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="created" content="2026-08-22 21:00:09 +0800">
-<meta name="updated" content="2026-09-08 11:35:45 +0800">
+<meta name="updated" content="2026-10-10 18:20:49 +0800">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>北歐路線方案地圖</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -85,6 +85,8 @@
   #map { height: 480px; }
   .info-panel { padding: 12px 16px; background: #fff; border-top: 1px solid #e5e7eb; font-size: 12.5px; min-height: 60px; }
   .info-panel h3 { font-size: 13px; margin-bottom: 4px; }
+
+  .nav-link { display: inline-block; margin: 0 20px 12px; padding: 6px 14px; border-radius: 6px; border: 1px solid #3b82d4; background: #eff6ff; color: #3b82d4; font-size: 13px; font-weight: 600; text-decoration: none; }
 </style>
 </head>
 <body>
@@ -92,6 +94,7 @@
 
 <h1>北歐路線方案比較</h1>
 <p class="subtitle">出發：2026/10/24 AMS→ARN　｜　回程：2026/11/07 離阿姆斯特丹　｜　歐洲在地 14 天</p>
+<a class="nav-link" href="arctic-details.html">📋 各國細節：每日行程與備用清單 →</a>
 
 <!-- ── 互動地圖 ── -->
 <div class="map-section">
@@ -108,34 +111,6 @@
   </div>
 </div>
 
-<!-- ── 關鍵說明 ── -->
-<div class="route-card" style="margin-bottom:20px;">
-  <div class="card-header plan3" style="padding:10px 16px;">
-    <span class="plan-label">關鍵說明</span>
-    <span class="plan-title">行程設計邏輯 + 已確認事項</span>
-  </div>
-  <div class="cols">
-    <div class="col">
-      <div class="col-hd pro"><span class="dot dot-p"></span>已確認的安排</div>
-      <ul>
-        <li><span class="ic">✓</span><span><strong>夜臥火車直達阿比斯庫</strong><br>斯德哥爾摩 18:12 出發，Boden 轉車後 10/27 10:43 直抵 Abisko Turiststation，行程俐落。</span></li>
-        <li><span class="ic">✓</span><span><strong>阿比斯庫 2 晚</strong><br>北極光最佳觀測地，2 晚提高看到極光的機率；白天可走 Kungsleden 健行步道。</span></li>
-        <li><span class="ic">✓</span><span><strong>EVE 同地取還車（已確認車型）</strong><br>Avis BMW X3（或類似中型SUV）NT$5,750 / Hertz Volvo EX40（或類似標準SUV）NT$8,865；10/29 15:30 取車，11/02 12:00 還車；兩台合計 NT$14,615。訂票：<a href="https://www.klook.com" target="_blank">Klook</a>（Avis）、<a href="https://www.trip.com" target="_blank">Trip.com</a>（Hertz）。</span></li>
-        <li><span class="ic">✓</span><span><strong>羅浮敦雙基地</strong><br>Svolvær（北部據點）+ Hamnøy（峽灣景色最佳），充分體驗群島多樣風貌。</span></li>
-        <li><span class="ic">✓</span><span><strong>Widerøe EVE→TOS 11/02 14:40（確定）</strong><br>871 NOK／人含托運；從 EVE 還車後直接 check-in，約 16:00 抵 TOS，原訂住宿當天入住。</span></li>
-      </ul>
-    </div>
-    <div class="col">
-      <div class="col-hd con"><span class="dot dot-c"></span>仍需確認 / 注意</div>
-      <ul>
-        <li><span class="ic">!</span><span><strong>⚡ 兩台均為電動車，需確認充電</strong><br>BMW X3（Avis）+ Volvo EX40（Hertz）皆為電能驅動；建議出發前至 <a href="https://www.plugshare.com" target="_blank">Plugshare</a> 確認 Svolvær、Hamnøy 及沿途充電樁位置，並確認住宿有充電設施。</span></li>
-        <li><span class="ic">✓</span><span><strong>Narvik → EVE 巴士：200號 13:43（確定）</strong><br>12:37 抵 Narvik stasjon 後快速用餐，步行 268m 至 Bromsgård (ved Narvik storsenter)，13:47 搭 200號巴士（Harstad 方向）至 EVE（14:51 抵），票價 66 kr／人；取車後約 17:00 抵 Svolvær。</span></li>
-        <li><span class="ic">!</span><span><strong>11/02 Hamnøy→EVE 時間預留</strong><br>Hamnøy→Svolvær→EVE 約 2.5–3h；14:40 班機建議 13:00 前抵 EVE，需 11:00 前出發。</span></li>
-        <li><span class="ic">!</span><span><strong>租車日期需重新確認</strong><br>行程前移一天，租車改為 10/29 15:30 取車、11/02 12:00 還車，需至 Klook（Avis）及 Trip.com（Hertz）重新查詢確認車況與價格。</span></li>
-      </ul>
-    </div>
-  </div>
-</div>
 </div><!-- /.page -->
 
 <!-- ── 行程總覽表（全寬突破）── -->
@@ -157,15 +132,15 @@
     <table style="margin:0;border-radius:0;">
       <thead>
         <tr>
-          <th style="width:16%">站點</th>
-          <th style="width:8%">住宿</th>
+          <th style="width:13%">站點</th>
+          <th style="width:20%">住宿</th>
           <th colspan="4">離開交通・訂票資訊</th>
         </tr>
         <tr style="background:#eef2f7;">
           <th></th><th></th>
-          <th style="width:18%">交通工具</th>
-          <th style="width:22%">時間</th>
-          <th style="width:14%">訂票平台</th>
+          <th style="width:15%">交通工具</th>
+          <th style="width:20%">時間</th>
+          <th style="width:11%">訂票平台</th>
           <th>費用</th>
         </tr>
       </thead>
@@ -182,7 +157,7 @@
         <!-- 斯德哥爾摩 -->
         <tr>
           <td rowspan="2"><strong>斯德哥爾摩</strong><br><span style="font-size:11px;color:#57606a">10/24 13:10 飛抵 ARN</span></td>
-          <td rowspan="2">2 晚</td>
+          <td rowspan="2">2 晚<br><a href="https://www.airbnb.com/rooms/1772541073162967042" target="_blank">Airbnb 民宿</a><br><span style="font-size:11px;color:#57606a">10/24–10/26</span></td>
           <td>🚂 SJ Night train 94</td>
           <td>10/26 <strong>18:12</strong> STK → Boden 05:42</td>
           <td rowspan="2" style="vertical-align:middle;text-align:center;"><a href="https://www.sj.se/en" target="_blank">sj.se</a><br><span style="font-size:11px;color:#57606a">（統一購買）</span></td>
@@ -196,7 +171,7 @@
         <!-- 阿比斯庫 -->
         <tr>
           <td><strong>阿比斯庫</strong><br><span style="font-size:11px;color:#57606a">10/27 10:43 抵</span></td>
-          <td>2 晚</td>
+          <td>2 晚<br><a href="https://tw.hotels.com/ho1662236768/" target="_blank">Abisko Turiststation (STF)</a><br><span style="font-size:11px;color:#57606a">Hotels.com・10/27–10/29</span></td>
           <td>🚂 SJ InterCity 98</td>
           <td>10/29 <strong>10:46</strong> Abisko → <strong>12:37</strong> Narvik</td>
           <td style="text-align:center;"><a href="https://www.sj.se/en" target="_blank">sj.se</a><br><span style="font-size:11px;color:#57606a">（統一購買）</span></td>
@@ -204,8 +179,8 @@
         </tr>
         <!-- Narvik → EVE -->
         <tr style="background:#fef9ec">
-          <td rowspan="4"><strong>Narvik → EVE</strong><br><span style="font-size:11px;color:#57606a">10/29 12:37 抵 Narvik<br>Evenes 機場取車</span></td>
-          <td rowspan="4">—</td>
+          <td rowspan="3"><strong>Narvik → EVE</strong><br><span style="font-size:11px;color:#57606a">10/29 12:37 抵 Narvik<br>Evenes 機場取車</span></td>
+          <td rowspan="3">—</td>
           <td>🚌 200號巴士（建議）</td>
           <td><strong>13:43</strong> Narvik stasjon → 步行 268m → <strong>13:47</strong> Bromsgård 搭車 → <strong>14:51</strong> EVE（1h8min，32 stops）</td>
           <td rowspan="2" style="vertical-align:middle;text-align:center;"><a href="https://www.reisnordland.no/" target="_blank">reisnordland.no</a></td>
@@ -217,20 +192,19 @@
           <td><span style="font-size:11px;color:#57606a"><strong>66 kr</strong>／人</span></td>
         </tr>
         <tr style="background:#fef9ec">
-          <td>🚗 Avis BMW X3（或類似中型SUV）⚡</td>
-          <td>10/29 <strong>15:30</strong> 取車 → 11/02 <strong>12:00</strong> 還車</td>
-          <td rowspan="2" style="vertical-align:middle;text-align:center;"><a href="https://www.klook.com" target="_blank">klook.com</a></td>
-          <td><span style="font-size:11px;color:#57606a">NT$5,750・無限里程・滿取滿還</span></td>
-        </tr>
-        <tr style="background:#fef9ec">
-          <td>🚗 Hertz Volvo EX40（或類似標準SUV）⚡</td>
-          <td>10/29 <strong>15:30</strong> 取車 → 11/02 <strong>12:00</strong> 還車</td>
-          <td><span style="font-size:11px;color:#57606a">NT$8,865・無限里程・滿取滿還</span></td>
+          <td>🚗 Avis Škoda Enyaq 或同級 SUV ⚡（已訂）</td>
+          <td>10/29 <strong>15:30</strong> 取車 → 11/02 <strong>12:30</strong> 還車</td>
+          <td style="vertical-align:middle;text-align:center;"><a href="https://www.klook.com" target="_blank">Klook</a><br><span style="font-size:11px;color:#57606a">BAM145139</span></td>
+          <td><span style="font-size:11px;color:#57606a"><strong>NT$10,551</strong>・5座3行李・自排電動</span></td>
         </tr>
         <!-- 羅浮敦 -->
         <tr>
           <td><strong>羅浮敦群島</strong><br><span style="font-size:11px;color:#57606a">Svolvær + Hamnøy<br>10/29 ~17:00 抵</span></td>
-          <td>4 晚</td>
+          <td>4 晚<br>
+            <span style="font-size:11px;color:#57606a">第 1 晚 10/29：</span><a href="https://www.booking.com/hotel/no/lofoten-cabins.zh-tw.html?checkin=2026-10-29&amp;checkout=2026-10-30&amp;group_adults=3&amp;no_rooms=1&amp;group_children=0" target="_blank">Lofoten Cabins</a><br>
+            <span style="font-size:11px;color:#57606a">第 2、3 晚 10/30–11/01：</span><a href="https://www.booking.com/hotel/no/cozy-house-by-the-fjord-in-the-heart-of-lofoten.zh-tw.html?checkin=2026-10-30&amp;checkout=2026-11-01&amp;group_adults=3&amp;no_rooms=1&amp;group_children=0" target="_blank">Cozy house by the fjord</a><br>
+            <span style="font-size:11px;color:#57606a">第 4 晚 11/01：</span><a href="https://www.booking.com/hotel/no/lys-og-trivelig-3-roms-leilighet.zh-tw.html?checkin=2026-11-01&amp;checkout=2026-11-02&amp;group_adults=3&amp;no_rooms=1&amp;group_children=0" target="_blank">Lys og trivelig 3-roms leilighet</a><br>
+            <span style="font-size:11px;color:#57606a">Booking.com</span></td>
           <td>✈ Widerøe EVE→TOS</td>
           <td>11/02 <strong>14:40</strong> EVE → <strong>16:00</strong> TOS（1h20m）</td>
           <td style="text-align:center;"><a href="https://www.wideroe.no" target="_blank">wideroe.no</a></td>
@@ -239,7 +213,7 @@
         <!-- 特羅姆瑟 -->
         <tr>
           <td rowspan="2"><strong>特羅姆瑟</strong><br><span style="font-size:11px;color:#57606a">11/02 ~16:00 飛抵</span></td>
-          <td rowspan="2">2 晚</td>
+          <td rowspan="2">2 晚<br><a href="https://www.booking.com/hotel/no/cozy-new-renovated-apartment-with-to-bedrooms-and-beautiful-view.zh-tw.html?checkin=2026-11-02&amp;checkout=2026-11-04&amp;group_adults=3&amp;no_rooms=1&amp;group_children=0" target="_blank">Cozy new renovated apartment (2 bedrooms)</a><br><span style="font-size:11px;color:#57606a">Booking.com・11/02–11/04</span></td>
           <td>✈ KLM KL8543（北歐航空承運）</td>
           <td>11/04 <strong>08:45</strong> TOS → <strong>10:45</strong> OSL</td>
           <td rowspan="2" style="vertical-align:middle;text-align:center;"><a href="https://www.skyscanner.com.tw" target="_blank">Skyscanner</a></td>
@@ -249,79 +223,23 @@
           <td>✈ KLM KL1200</td>
           <td><strong>12:35</strong> OSL → <strong>14:30</strong> AMS</td>
         </tr>
+        <!-- 阿姆斯特丹（回程） -->
+        <tr style="background:#f0fdf4">
+          <td><strong>阿姆斯特丹</strong><br><span style="font-size:11px;color:#57606a">11/04 14:30 飛抵 AMS</span></td>
+          <td>3 晚<br><span style="font-size:11px;color:#57606a">11/04–11/07・住宿待填</span></td>
+          <td>✈ CI74 回台北</td>
+          <td>11/07 <strong>10:40</strong> AMS 出發</td>
+          <td style="text-align:center;">—</td>
+          <td><span style="font-size:11px;color:#57606a">—</span></td>
+        </tr>
       </tbody>
     </table>
-  </div>
-
-  <div class="summary-title">完整行程總覽</div>
-  <table>
-    <thead>
-      <tr>
-        <th style="width:15%">站點</th>
-        <th style="width:16%">抵達</th>
-        <th style="width:6%">住宿</th>
-        <th style="width:16%">離開</th>
-        <th>主要活動</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr style="background:#f0fdf4">
-        <td><strong>🇳🇱 阿姆斯特丹</strong><br><span style="font-size:11px;color:#57606a">過境，直飛 ARN</span></td>
-        <td>✈ 10/24 07:40 抵 AMS<br><span style="font-size:11px;color:#57606a">CI73 台北出發</span></td>
-        <td>—</td>
-        <td>✈ 10/24 11:10 飛 ARN</td>
-        <td>過境 AMS，當日直飛斯德哥爾摩</td>
-      </tr>
-      <tr>
-        <td><strong>🇸🇪 斯德哥爾摩</strong><br><span style="font-size:11px;color:#57606a">Stockholm</span></td>
-        <td>✈ 10/24 13:10 飛抵 ARN</td>
-        <td>2 晚</td>
-        <td>🚂 10/26 18:12 夜臥出發</td>
-        <td>舊城區（Gamla Stan）、瓦薩博物館、ABBA 博物館</td>
-      </tr>
-      <tr>
-        <td><strong>🇸🇪 阿比斯庫</strong><br><span style="font-size:11px;color:#57606a">Abisko</span></td>
-        <td>🚂 10/27 10:43 抵</td>
-        <td>2 晚</td>
-        <td>🚂 10/29 10:46 出發</td>
-        <td>北極光（STF 極光站）、Kungsleden 健行步道<br><span style="font-size:11px;color:#dc2626">⚠ 10月底以健行為主</span></td>
-      </tr>
-      <tr style="background:#fef9ec">
-        <td><strong>🇳🇴 Narvik → EVE</strong><br><span style="font-size:11px;color:#57606a">取車點</span></td>
-        <td>🚂 10/29 12:37 抵 Narvik</td>
-        <td>—</td>
-        <td>🚌 13:43 巴士 → EVE<br>🚗 EVE 取車 → Svolvær</td>
-        <td>Narvik 快速用餐；取車後自駕至 Svolvær（約 17:00 抵）</td>
-      </tr>
-      <tr>
-        <td><strong>🇳🇴 羅浮敦群島</strong><br><span style="font-size:11px;color:#57606a">Svolvær + Hamnøy</span></td>
-        <td>🚗 10/29 ~17:00 抵 Svolvær</td>
-        <td>4 晚</td>
-        <td>11/02 午前 EVE 還車<br>✈ 14:40 EVE→TOS</td>
-        <td>Svolvær 2晚（漁村、Henningsvær）；Hamnøy 1晚（Reine 峽灣）</td>
-      </tr>
-      <tr>
-        <td><strong>🇳🇴 特羅姆瑟</strong><br><span style="font-size:11px;color:#57606a">Tromsø</span></td>
-        <td>✈ 11/02 ~16:00 抵</td>
-        <td>2 晚</td>
-        <td>✈ 11/04 08:45 出發</td>
-        <td>北極光、Arctic Cathedral、狗拉雪橇、極地博物館</td>
-      </tr>
-      <tr style="background:#f0fdf4">
-        <td><strong>🇳🇱 阿姆斯特丹</strong><br><span style="font-size:11px;color:#57606a">回程前停留</span></td>
-        <td>✈ 11/04 14:30 飛抵 AMS</td>
-        <td>3 晚</td>
-        <td>✈ 11/07 10:40 出發</td>
-        <td>運河、梵谷博物館、Rijksmuseum、街頭市集</td>
-      </tr>
-    </tbody>
-  </table>
   <div style="padding:10px 16px;font-size:12px;color:#57606a;background:#f7f8fa;border-top:1px solid #e5e7eb;">
     📅 <strong>歐洲在地 14 天（10/24–11/07）</strong>　｜　北歐核心 10 晚　｜　阿姆斯特丹 3 晚（回程）　｜　CI74 11/07 10:40 出發<br>
-    🚗 <strong>租車段：</strong>EVE 取車（10/29）→ EVE 還車（11/02）共 4 天，同地還車　｜　✈ Widerøe 11/02 14:40 EVE→TOS，871 NOK／人含托運
+    🚗 <strong>租車段：</strong>Avis Škoda Enyaq（電動）10/29 15:30 取車 → 11/02 12:30 還車，NT$10,551，同地還車　｜　✈ Widerøe 11/02 14:40 EVE→TOS，871 NOK／人含托運
+  </div>
   </div>
 </div>
-
 <footer>地圖資料 © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors　｜　Made with IBM Bob</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -379,7 +297,9 @@ Object.entries(ROUTES).forEach(([id, r]) => {
   }).addTo(map);
   polylines[id] = pl;
 });
+
 </script>
+
 
 </body>
 </html>
