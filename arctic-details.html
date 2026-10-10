@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="updated" content="2026-10-10 18:24:02 +0800">
+<meta name="updated" content="2026-10-10 18:34:09 +0800">
 <meta name="created" content="2026-10-10 18:20:49 +0800">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>北歐旅程：各國細節</title>
@@ -60,6 +60,8 @@
   .tk-form button[type=submit] { background: #3b82d4; border-color: #3b82d4; color: #fff; font-weight: 600; }
   .tk-reset { margin-left: auto; align-self: center; padding: 3px 10px; border-radius: 6px; border: 1px solid #d0d7de; background: #fff; color: #57606a; font-size: 11px; cursor: pointer; }
   .tk-hint { font-size: 12px; color: #57606a; margin: -4px 0 12px; }
+  .tk-col:not(:has(.tk-card)) { min-height: 90px; border: 1px dashed #c4ccd6; background: #f4f6f9; }
+  .tk-col:not(:has(.tk-card))::after { content: "拖曳卡牌到這裡"; font-size: 11px; color: #9ca3af; text-align: center; padding: 18px 0; }
   .tk-empty { background: #fff; border: 1px dashed #bbb; border-radius: 6px; padding: 12px; color: #57606a; font-size: 12px; text-align: center; }
 
   /* 手機版 */
@@ -117,7 +119,12 @@
     </div>
   </div>
   <div id="tk-nl" class="tk-pane">
-    <div class="tk-empty">11/04–11/07 尚未排定每日行程，下方皆為備用。</div>
+    <div class="tk-board">
+      <div class="tk-col"><div class="tk-col-h">11/04<span class="tk-m">阿姆斯特丹・抵達</span></div></div>
+      <div class="tk-col"><div class="tk-col-h">11/05<span class="tk-m">阿姆斯特丹</span></div></div>
+      <div class="tk-col"><div class="tk-col-h">11/06<span class="tk-m">阿姆斯特丹</span></div></div>
+      <div class="tk-col"><div class="tk-col-h">11/07<span class="tk-m">阿姆斯特丹・回程</span></div></div>
+    </div>
     <div class="tk-backbar"><div class="tk-col-h">💤 備用清單 <span class="tk-cnt">7</span><span class="tk-m">沒排進哪一天，想去時再挑</span></div>
       <div class="tk-filters"><button class="tk-f on" data-f="all">全部</button><button class="tk-f" data-f="景點">景點</button><button class="tk-f" data-f="採買">採買</button></div>
       <div class="tk-row"><div class="tk-card tk-back" data-cat="景點"><span class="tk-cat">景點</span><b>風車村</b><br><span class="tk-m">推測 Zaanse Schans</span> <span class="tag tag-w">待確認</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Zaanse+Schans" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="景點"><span class="tk-cat">景點</span><b>羊角村</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Giethoorn" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="景點"><span class="tk-cat">景點</span><b>梵谷博物館</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Van+Gogh+Museum+Amsterdam" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="景點"><span class="tk-cat">景點</span><b>Vondelpark</b><br><span class="tk-m">公園</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Vondelpark+Amsterdam" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="景點"><span class="tk-cat">景點</span><b>A'DAM Lookout</b><br><span class="tk-m">俯瞰阿姆斯特丹全景</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=A%27DAM+Lookout+Amsterdam" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="景點"><span class="tk-cat">景點</span><b>運河遊船</b><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Amsterdam+canal+cruise" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div><div class="tk-card tk-back" data-cat="採買"><span class="tk-cat">採買</span><b>Albert Cuypmarkt</b><br><span class="tk-m">市集</span><br><a class="tk-map" href="https://www.google.com/maps/search/?api=1&amp;query=Albert+Cuypmarkt+Amsterdam" target="_blank" rel="noopener noreferrer">📍 Google Maps</a></div></div>

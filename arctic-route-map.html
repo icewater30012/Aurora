@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="created" content="2026-08-22 21:00:09 +0800">
-<meta name="updated" content="2026-10-10 18:20:49 +0800">
+<meta name="updated" content="2026-10-10 18:34:09 +0800">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>北歐路線方案地圖</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -87,6 +87,9 @@
   .info-panel h3 { font-size: 13px; margin-bottom: 4px; }
 
   .nav-link { display: inline-block; margin: 0 20px 12px; padding: 6px 14px; border-radius: 6px; border: 1px solid #3b82d4; background: #eff6ff; color: #3b82d4; font-size: 13px; font-weight: 600; text-decoration: none; }
+  .tbl-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tbl-scroll th, .tbl-scroll td { min-width: 0; }
+  @media (max-width: 640px) { .tbl-scroll { box-shadow: inset -12px 0 8px -10px rgba(0,0,0,.18); } }
 </style>
 </head>
 <body>
@@ -129,7 +132,8 @@
     <span class="city-name">特羅姆瑟</span><span class="arr">→（✈ SAS）</span>
     <span class="city-name">✈ 阿姆斯特丹</span>
   </div>
-    <table style="margin:0;border-radius:0;">
+    <div class="tbl-scroll">
+    <table style="margin:0;border-radius:0;min-width:760px;">
       <thead>
         <tr>
           <th style="width:13%">站點</th>
@@ -234,6 +238,7 @@
         </tr>
       </tbody>
     </table>
+    </div>
   <div style="padding:10px 16px;font-size:12px;color:#57606a;background:#f7f8fa;border-top:1px solid #e5e7eb;">
     📅 <strong>歐洲在地 14 天（10/24–11/07）</strong>　｜　北歐核心 10 晚　｜　阿姆斯特丹 3 晚（回程）　｜　CI74 11/07 10:40 出發<br>
     🚗 <strong>租車段：</strong>Avis Škoda Enyaq（電動）10/29 15:30 取車 → 11/02 12:30 還車，NT$10,551，同地還車　｜　✈ Widerøe 11/02 14:40 EVE→TOS，871 NOK／人含托運
