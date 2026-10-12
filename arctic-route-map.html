@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" data-page-title="page_map_title">
 <head>
 <meta charset="UTF-8">
 <meta name="created" content="2026-08-22 21:00:09 +0800">
-<meta name="updated" content="2026-10-10 18:34:09 +0800">
+<meta name="updated" content="2026-10-10 20:45:10 +0800">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>北歐路線方案地圖</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; font-size: 14px; background: #f7f8fa; color: #1f2328; }
@@ -86,6 +86,17 @@
   .info-panel { padding: 12px 16px; background: #fff; border-top: 1px solid #e5e7eb; font-size: 12.5px; min-height: 60px; }
   .info-panel h3 { font-size: 13px; margin-bottom: 4px; }
 
+  .toggle-bar select { padding: 4px 8px; border: 1.5px solid #e5e7eb; border-radius: 999px; background: #fff; font-size: 12px; color: #57606a; }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 8px 16px; font-size: 11px; color: #57606a; background: #fff; border-top: 1px solid #e5e7eb; }
+  .lg { display: inline-flex; align-items: center; gap: 5px; }
+  .lg-line { display: inline-block; width: 22px; height: 0; }
+  .lg-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
+  .lg-plan { background: #3b82d4; border: 2px solid #fff; box-shadow: 0 0 0 1px #3b82d4; }
+  .lg-back { background: #fff; border: 2px dashed #9ca3af; }
+  .lg-city { background: #e05c3a; border: 2px solid #fff; box-shadow: 0 0 0 1px #e05c3a; }
+  .city-label.minor { font-weight: 500; }
+  .spot-pop b { font-size: 13px; } .spot-pop .sm { color: #57606a; font-size: 11px; }
+  @media (max-width: 640px) { #map { height: 420px; } .toggle-bar { padding: 8px 10px; gap: 6px; } }
   .nav-link { display: inline-block; margin: 0 20px 12px; padding: 6px 14px; border-radius: 6px; border: 1px solid #3b82d4; background: #eff6ff; color: #3b82d4; font-size: 13px; font-weight: 600; text-decoration: none; }
   .tbl-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .tbl-scroll th, .tbl-scroll td { min-width: 0; }
@@ -95,22 +106,41 @@
 <body>
 <div class="page">
 
-<h1>北歐路線方案比較</h1>
-<p class="subtitle">出發：2026/10/24 AMS→ARN　｜　回程：2026/11/07 離阿姆斯特丹　｜　歐洲在地 14 天</p>
-<a class="nav-link" href="arctic-details.html">📋 各國細節：每日行程與備用清單 →</a>
+<h1 data-i18n="page_map_title">北歐路線方案比較</h1>
+<p class="subtitle" data-i18n="page_map_subtitle">出發：2026/10/24 AMS→ARN　｜　回程：2026/11/07 離阿姆斯特丹　｜　歐洲在地 14 天</p>
+<a class="nav-link" href="arctic-details.html" data-i18n="nav_to_details">📋 各國細節：每日行程與備用清單 →</a>
 
 <!-- ── 互動地圖 ── -->
 <div class="map-section">
-  <div class="map-section-header">互動地圖　— 點擊按鈕切換方案，點擊城市標記查看說明</div>
-  <div class="toggle-bar">
-    <button class="toggle-btn btn1 active" id="btn1">
-      <span class="swatch" style="background:#3b82d4"></span>完整路線（實線）
-    </button>
+  <div class="map-section-header" data-i18n="map_section_header">互動地圖　— 切換圖層、選區域或日期，點擊標記看說明</div>
+  <div class="toggle-bar" id="layer-bar">
+    <button type="button" class="toggle-btn active" data-layer="route" data-i18n="btn_route">路線</button>
+    <button type="button" class="toggle-btn active" data-layer="plan" data-i18n="btn_plan">預設行程景點</button>
+    <button type="button" class="toggle-btn active" data-layer="backup" data-i18n="btn_backup">備用景點</button>
+    <select id="day-sel" title="只看某一天的預設景點"></select>
+  </div>
+  <div class="toggle-bar" id="region-bar">
+    <button type="button" class="toggle-btn active" data-region="all" data-i18n="region_all">全覽</button>
+    <button type="button" class="toggle-btn" data-region="nl" data-i18n="region_nl">荷蘭</button>
+    <button type="button" class="toggle-btn" data-region="stockholm" data-i18n="region_stockholm">斯德哥爾摩</button>
+    <button type="button" class="toggle-btn" data-region="abisko" data-i18n="region_abisko">阿比斯庫</button>
+    <button type="button" class="toggle-btn" data-region="narvik" data-i18n="region_narvik">Narvik／Evenes</button>
+    <button type="button" class="toggle-btn" data-region="lofoten" data-i18n="region_lofoten">羅浮敦</button>
+    <button type="button" class="toggle-btn" data-region="tromso" data-i18n="region_tromso">特羅姆瑟</button>
   </div>
   <div id="map"></div>
+  <div class="legend">
+    <span class="lg"><i class="lg-line" style="border-top:3px dashed #7c5cd8"></i><span data-i18n="leg_fly">飛機</span></span>
+    <span class="lg"><i class="lg-line" style="border-top:3px solid #3b82d4"></i><span data-i18n="leg_train">火車</span></span>
+    <span class="lg"><i class="lg-line" style="border-top:3px dashed #d97706"></i><span data-i18n="leg_bus">巴士</span></span>
+    <span class="lg"><i class="lg-line" style="border-top:3px solid #16a34a"></i><span data-i18n="leg_drive">自駕</span></span>
+    <span class="lg"><i class="lg-dot lg-plan"></i><span data-i18n="leg_plan">預設行程</span></span>
+    <span class="lg"><i class="lg-dot lg-back"></i><span data-i18n="leg_backup">備用清單</span></span>
+    <span class="lg"><i class="lg-dot lg-city"></i><span data-i18n="leg_city">住宿城市</span></span>
+  </div>
   <div class="info-panel" id="info-panel">
-    <h3>城市說明</h3>
-    <p>點擊地圖上的城市圓點，查看該站在各方案中的角色與時刻資訊。</p>
+    <h3>點擊說明</h3>
+    <p>點地圖上的城市、景點或路線，這裡會顯示詳細說明。路線依實際道路繪製（火車為示意），景點座標來自 OpenStreetMap，標「概估」的位置請以 Google Maps 為準。</p>
   </div>
 </div>
 
@@ -129,7 +159,7 @@
     <span class="city-name">斯德哥爾摩</span><span class="arr">→（夜臥火車，直達）</span>
     <span class="city-name">阿比斯庫</span><span class="arr">→（火車 → Narvik → 巴士 → EVE 取車）</span>
     <span class="city-name">羅浮敦群島</span><span class="arr">→（EVE 還車 ✈ Widerøe）</span>
-    <span class="city-name">特羅姆瑟</span><span class="arr">→（✈ SAS）</span>
+    <span class="city-name">特羅姆瑟</span><span class="arr">→（✈ KLM 經 OSL）</span>
     <span class="city-name">✈ 阿姆斯特丹</span>
   </div>
     <div class="tbl-scroll">
@@ -198,12 +228,12 @@
         <tr style="background:#fef9ec">
           <td>🚗 Avis Škoda Enyaq 或同級 SUV ⚡（已訂）</td>
           <td>10/29 <strong>15:30</strong> 取車 → 11/02 <strong>12:30</strong> 還車</td>
-          <td style="vertical-align:middle;text-align:center;"><a href="https://www.klook.com" target="_blank">Klook</a><br><span style="font-size:11px;color:#57606a">BAM145139</span></td>
+          <td style="vertical-align:middle;text-align:center;"><a href="https://www.klook.com" target="_blank">Klook</a></td>
           <td><span style="font-size:11px;color:#57606a"><strong>NT$10,551</strong>・5座3行李・自排電動</span></td>
         </tr>
         <!-- 羅浮敦 -->
         <tr>
-          <td><strong>羅浮敦群島</strong><br><span style="font-size:11px;color:#57606a">Svolvær + Hamnøy<br>10/29 ~17:00 抵</span></td>
+          <td><strong>羅浮敦群島</strong><br><span style="font-size:11px;color:#57606a">Svolvær + Hamnøy<br>10/29 ~18:30 抵</span></td>
           <td>4 晚<br>
             <span style="font-size:11px;color:#57606a">第 1 晚 10/29：</span><a href="https://www.booking.com/hotel/no/lofoten-cabins.zh-tw.html?checkin=2026-10-29&amp;checkout=2026-10-30&amp;group_adults=3&amp;no_rooms=1&amp;group_children=0" target="_blank">Lofoten Cabins</a><br>
             <span style="font-size:11px;color:#57606a">第 2、3 晚 10/30–11/01：</span><a href="https://www.booking.com/hotel/no/cozy-house-by-the-fjord-in-the-heart-of-lofoten.zh-tw.html?checkin=2026-10-30&amp;checkout=2026-11-01&amp;group_adults=3&amp;no_rooms=1&amp;group_children=0" target="_blank">Cozy house by the fjord</a><br>
@@ -230,7 +260,7 @@
         <!-- 阿姆斯特丹（回程） -->
         <tr style="background:#f0fdf4">
           <td><strong>阿姆斯特丹</strong><br><span style="font-size:11px;color:#57606a">11/04 14:30 飛抵 AMS</span></td>
-          <td>3 晚<br><span style="font-size:11px;color:#57606a">11/04–11/07・住宿待填</span></td>
+          <td>3 晚<br><span style="font-size:11px;color:#57606a">🏠 住朋友家・11/04–11/07</span></td>
           <td>✈ CI74 回台北</td>
           <td>11/07 <strong>10:40</strong> AMS 出發</td>
           <td style="text-align:center;">—</td>
@@ -245,66 +275,11 @@
   </div>
   </div>
 </div>
-<footer>地圖資料 © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors　｜　Made with IBM Bob</footer>
+<footer><span data-i18n="footer">底圖 © Esri　｜　路線與景點座標 © OpenStreetMap contributors　｜　Made with IBM Bob</span></footer>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-const map = L.map('map').setView([65.5, 17.0], 4);
-L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-  attribution: 'Tiles © Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
-  maxZoom: 17
-}).addTo(map);
-
-const CITIES = {
-  stockholm: { ll: [59.33, 18.07], name: '斯德哥爾摩', en: 'Stockholm', lat: '59.3°N', main: true,
-    desc: '<b>住宿：2 晚</b>　10/24 從 AMS 直飛 ARN（KLM 11:10→13:10）後入住。市區觀光後搭 10/26 <b>18:12</b> 夜臥火車出發（SJ Night train 94 → Boden 轉 SJ InterCity 98），10/27 <b>10:43</b> 直抵 Abisko Turiststation。票價3人：Seat Fr.2,175 / Couchette Fr.3,375 / Sleeping Fr.4,395 SEK。訂票：<a href="https://www.sj.se/en" target="_blank">sj.se</a>' },
-  abisko:    { ll: [68.35, 18.82], name: '阿比斯庫', en: 'Abisko', lat: '68.4°N', main: false,
-    desc: '<b>住宿：2 晚</b>　北極光核心景點（北極圈以北）。<br>🚂 10/27 <b>10:43</b> 夜臥直達抵達。白天健行 Kungsleden 步道，夜晚 STF 極光站觀測極光。<br>🚂 10/29 <b>10:46</b> 出發 SJ InterCity 98 → Narvik <b>12:37</b> 抵（1h51m，0 轉乘，255 SEK／3人）。訂票：<a href="https://www.sj.se/en" target="_blank">sj.se</a>' },
-  narvik:    { ll: [68.44, 17.43], name: 'Narvik → EVE', en: 'Narvik / Evenes', lat: '68.4°N', main: false,
-    desc: '<b>純轉乘點（不過夜）</b><br>🚂 SJ InterCity 98 10:46 自 Abisko → <b>12:37 抵 Narvik stasjon</b>。步行 268m 至 Bromsgård (ved Narvik storsenter) 搭巴士：<br>班① 200號 <b>13:47→14:51</b>（Harstad 方向，32 stops，66 kr／人；取車後約 17:00 抵 Svolvær）<br>班② 300號 <b>15:46→16:50</b>（Svolvær-Leknes-Å i Lofoten，36 stops，66 kr／人；取車後約 18:30 抵 Svolvær）<br>🚗 EVE 取車後自駕 Svolvær（約 1.5–2h）。查詢：<a href="https://www.reisnordland.no/" target="_blank">reisnordland.no</a>' },
-  lofoten:   { ll: [68.15, 13.80], name: '羅浮敦群島', en: 'Lofoten', lat: '68.2°N', main: false,
-    desc: '<b>住宿：4 晚（Svolvær + Hamnøy）</b>　挪威最具代表性的群島風景。<br>🚗 EVE 自駕約 1.5–2h 抵 Svolvær。前 3 晚住 Svolvær，最後 1 晚移住 Hamnøy（Reine 峽灣）。11/02 上午玩完後開回 EVE 同地還車（約 1.5–2h）→ ✈ Widerøe 14:40 飛 TOS（871 NOK／人，含托運）。' },
-  tromso:    { ll: [69.65, 18.96], name: '特羅姆瑟', en: 'Tromsø', lat: '69.7°N', main: true,
-    desc: '<b>住宿：2 晚</b>　行程終點，北極圈以北約 340 km。<br>✈ Widerøe EVE→TOS 11/02 14:40 出發，約 16:00 抵達。北極光、極地博物館、狗拉雪橇。✈ <b>11/04 08:45</b> KLM KL8543 TOS→OSL，轉乘 KL1200（12:35）→ AMS，14:30 抵達（5h45m，NT$6,743／人，含托運）。訂票：<a href="https://www.skyscanner.com.tw" target="_blank">Skyscanner</a>' },
-};
-
-const ROUTES = {
-  r1: { color: '#3b82d4', dash: null, w: 5, offset: 0, stops: ['stockholm','abisko','narvik','lofoten','tromso'] },
-};
-
-const polylines = {};
-const markers = {};
-const leftSet = new Set(['narvik','abisko','lofoten','tromso']);
-
-Object.entries(CITIES).forEach(([id, c]) => {
-  const radius = c.main ? 10 : 7;
-  const side = leftSet.has(id) ? 'left' : 'right';
-  const offset = side === 'left' ? [-14, 0] : [14, 0];
-  const m = L.circleMarker(c.ll, {
-    radius, fillColor: '#e05c3a', color: '#fff', weight: 2, fillOpacity: 1
-  }).addTo(map);
-  m.bindTooltip(
-    `<b>${c.name}</b> <span style="color:#57606a;font-size:11px">${c.en} · ${c.lat}</span>`,
-    { permanent: true, direction: side, offset, className: 'city-label' }
-  );
-  m.on('click', () => {
-    document.getElementById('info-panel').innerHTML =
-      `<h3>${c.name} <span style="font-weight:400;font-size:12px;color:#57606a">${c.en} · ${c.lat}</span></h3><p style="margin-top:6px">${c.desc}</p>`;
-  });
-  markers[id] = m;
-});
-
-Object.entries(ROUTES).forEach(([id, r]) => {
-  const lls = r.stops.map(s => CITIES[s].ll);
-  const pl = L.polyline(lls, {
-    color: r.color, weight: r.w, opacity: 0.85,
-    dashArray: r.dash, offset: r.offset
-  }).addTo(map);
-  polylines[id] = pl;
-});
-
-</script>
-
+<script src="i18n.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="map.js"></script>
 
 </body>
 </html>

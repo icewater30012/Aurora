@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>2026 荷比丹北歐極光慢旅｜行程選擇</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,600;1,400;1,600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* === THEME ================================================== */
+:root {
+  --bg-primary: #0c0c0e;
+  --bg-card: rgba(255,255,255,0.04);
+  --text-primary: #ede8e1;
+  --text-secondary: #9a9590;
+  --accent-warm: #d4a574;
+  --accent-gold: #c9b896;
+  --accent-aurora: #7ecfb0;
+  --accent-blue: #7ab8d4;
+  --border: rgba(255,255,255,0.08);
+  --font-display: 'Cormorant', Georgia, serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --title-size: clamp(2rem, 4vw, 3.8rem);
+  --h2-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  --h3-size: clamp(1.1rem, 1.8vw, 1.5rem);
+  --body-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  --small-size: clamp(0.85rem, 1.05vw, 1rem);
+  --label-size: clamp(0.7rem, 0.85vw, 0.82rem);
+  --slide-padding: clamp(1.5rem, 3.5vw, 3.5rem);
+  --content-gap: clamp(0.75rem, 1.5vw, 1.5rem);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+/* === VIEWPORT BASE ========================================= */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow-x: hidden; }
+html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+.slide {
+  width: 100vw; height: 100vh; height: 100dvh;
+  overflow: hidden; scroll-snap-align: start;
+  display: flex; flex-direction: column;
+  position: relative; background: var(--bg-primary);
+}
+.slide-content {
+  flex: 1; display: flex; flex-direction: column;
+  justify-content: center; max-height: 100%;
+  overflow: hidden; padding: var(--slide-padding);
+}
+@media (max-height: 700px) {
+  :root { --slide-padding: clamp(0.75rem,2.5vw,1.8rem); --h2-size: clamp(1.2rem,2vw,1.7rem); --body-size: clamp(0.78rem,1vw,0.92rem); --small-size: clamp(0.7rem,0.9vw,0.85rem); --label-size: clamp(0.6rem,0.75vw,0.72rem); }
+}
+@media (max-height: 600px) {
+  :root { --slide-padding: clamp(0.5rem,2vw,1.2rem); --body-size: clamp(0.7rem,0.9vw,0.82rem); --small-size: clamp(0.62rem,0.8vw,0.75rem); --label-size: clamp(0.55rem,0.7vw,0.65rem); }
+  .nav-dots { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+}
+/* === ANIMATIONS ============================================ */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
+.slide.visible .reveal { opacity: 1; transform: translateY(0); }
+.reveal:nth-child(1) { transition-delay: 0.05s; }
+.reveal:nth-child(2) { transition-delay: 0.15s; }
+.reveal:nth-child(3) { transition-delay: 0.25s; }
+.reveal:nth-child(4) { transition-delay: 0.35s; }
+/* === SHARED COMPONENTS ===================================== */
+.glow-blob { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
+.section-label { font-family: var(--font-body); font-size: var(--label-size); font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: clamp(0.4rem,1vw,0.8rem); }
+.plan-badge { display: inline-flex; align-items: center; gap: 0.4em; font-family: var(--font-body); font-size: var(--label-size); font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.35em 0.9em; border-radius: 2em; border: 1px solid; margin-bottom: clamp(0.4rem,0.8vw,0.7rem); }
+.divider { height: 1px; background: var(--border); margin: clamp(0.5rem,1vw,1rem) 0; width: 100%; }
+/* === TABLE ================================================= */
+/* 表格包裝器：可捲動，但捲動事件不會觸發頁面換頁 */
+.table-scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain; /* 防止捲動冒泡到 scroll-snap */
+  -webkit-overflow-scrolling: touch;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.table-scroll::-webkit-scrollbar { width: 4px; }
+.table-scroll::-webkit-scrollbar-track { background: transparent; }
+.table-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+/* 固定欄位標題，捲動時不跟著滾 */
+.itinerary-table { width: 100%; border-collapse: collapse; font-family: var(--font-body); }
+.itinerary-table thead { position: sticky; top: 0; z-index: 2; background: #080c12; }
+.itinerary-table th { font-size: var(--label-size); font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-secondary); text-align: left; padding: 0.4em 0.6em 0.5em; border-bottom: 1px solid var(--border); }
+.itinerary-table td { font-size: var(--small-size); color: var(--text-primary); padding: 0.45em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; line-height: 1.45; }
+.itinerary-table tr:last-child td { border-bottom: none; }
+.itinerary-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+.td-date { color: var(--accent-gold); font-weight: 500; white-space: nowrap; width: 5em; }
+.td-city { color: var(--accent-aurora); font-weight: 500; white-space: nowrap; font-size: var(--small-size); }
+.td-spot { font-weight: 500; color: var(--text-primary); }
+.td-purpose { color: var(--text-secondary); }
+/* === NAV & PROGRESS ======================================== */
+.nav-dots { position: fixed; right: clamp(0.8rem,2vw,1.5rem); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 0.5rem; z-index: 100; }
+.nav-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.25); cursor: pointer; transition: all 0.3s ease; border: none; padding: 0; }
+.nav-dot.active { background: var(--accent-warm); transform: scale(1.4); }
+.progress-bar { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: linear-gradient(90deg, var(--accent-aurora), var(--accent-warm)); z-index: 200; transition: width 0.3s ease; }
+/* === SLIDE 1 — TITLE ======================================= */
+.title-slide { justify-content: center; align-items: center; text-align: center; }
+.title-slide .glow-blob.b1 { width: min(60vw,600px); height: min(60vw,600px); background: radial-gradient(circle,rgba(126,207,176,0.18) 0%,transparent 70%); top: -10%; left: -10%; }
+.title-slide .glow-blob.b2 { width: min(50vw,500px); height: min(50vw,500px); background: radial-gradient(circle,rgba(212,165,116,0.15) 0%,transparent 70%); bottom: -5%; right: -5%; }
+.title-slide .glow-blob.b3 { width: min(40vw,400px); height: min(40vw,400px); background: radial-gradient(circle,rgba(232,180,184,0.12) 0%,transparent 70%); top: 40%; left: 30%; }
+.title-inner { position: relative; z-index: 1; max-width: min(85vw,780px); }
+.title-eyebrow { font-family: var(--font-body); font-size: var(--label-size); letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent-aurora); margin-bottom: clamp(0.5rem,1.5vw,1.2rem); }
+.title-main { font-family: var(--font-display); font-size: clamp(2.4rem,6vw,5.5rem); font-weight: 600; color: var(--text-primary); line-height: 1.1; margin-bottom: clamp(0.4rem,1vw,0.8rem); }
+.title-main em { color: var(--accent-warm); font-style: italic; }
+.title-sub { font-family: var(--font-body); font-size: var(--body-size); font-weight: 300; color: var(--text-secondary); letter-spacing: 0.08em; margin-bottom: clamp(1rem,2.5vw,2rem); }
+.title-cards { display: flex; justify-content: center; gap: clamp(0.5rem,1.5vw,1rem); flex-wrap: wrap; }
+.title-card { padding: 0.5em 1.2em; border-radius: 2em; border: 1px solid var(--border); font-family: var(--font-body); font-size: var(--small-size); color: var(--text-secondary); background: var(--bg-card); }
+/* === AURORA SLIDES 2–5 ===================================== */
+.aurora-slide { background: #080c12; }
+.aurora-slide .glow-blob.aurora1 { width: min(55vw,550px); height: min(35vw,350px); background: radial-gradient(ellipse,rgba(0,180,120,0.22) 0%,transparent 65%); top: -8%; left: 5%; }
+.aurora-slide .glow-blob.aurora2 { width: min(40vw,400px); height: min(25vw,250px); background: radial-gradient(ellipse,rgba(80,0,200,0.18) 0%,transparent 65%); top: 0%; right: 10%; }
+.aurora-slide .glow-blob.aurora3 { width: min(50vw,500px); height: min(30vw,300px); background: radial-gradient(ellipse,rgba(0,120,200,0.14) 0%,transparent 65%); top: 5%; left: 30%; }
+.mountain-ridge { position: absolute; bottom: 0; left: 0; right: 0; height: clamp(60px,12vh,120px); overflow: hidden; z-index: 0; }
+.mountain-ridge svg { width: 100%; height: 100%; }
+/* Aurora layout — stacked，允許表格區捲動 */
+.aurora-layout { position: relative; z-index: 1; display: flex; flex-direction: column; gap: clamp(0.6rem,1.2vh,1.2rem); height: calc(100vh - 2 * var(--slide-padding) - clamp(60px,12vh,120px)); overflow: hidden; }
+.aurora-top { display: flex; flex-direction: row; gap: clamp(1.5rem,3vw,3rem); align-items: flex-start; }
+.aurora-top-left { display: flex; flex-direction: column; gap: 0.35rem; flex: 0 1 auto; min-width: 0; max-width: 55%; }
+.aurora-top-right { display: flex; flex-direction: column; gap: clamp(0.3rem,0.6vh,0.6rem); flex: 0 0 auto; justify-content: center; padding-top: 0.2rem; }
+.aurora-plan-title { font-family: var(--font-display); font-size: var(--h2-size); font-weight: 600; color: var(--text-primary); line-height: 1.15; }
+.aurora-plan-title em { font-style: italic; color: var(--accent-aurora); }
+.aurora-desc { font-family: var(--font-body); font-size: var(--body-size); font-weight: 300; color: var(--text-secondary); line-height: 1.55; max-width: 52ch; }
+.stat-item { display: flex; align-items: center; gap: 0.5em; font-family: var(--font-body); font-size: var(--small-size); color: var(--text-secondary); }
+.stat-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-aurora); flex-shrink: 0; }
+.stat-item strong { color: var(--text-primary); font-weight: 500; }
+/* === OVERVIEW SLIDE ======================================== */
+.overview-slide { background: #0c0c0e; }
+.overview-slide .glow-blob.o1 { width: min(45vw,450px); height: min(45vw,450px); background: radial-gradient(circle,rgba(201,184,150,0.1) 0%,transparent 65%); top: 50%; left: 50%; transform: translate(-50%,-50%); }
+.overview-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: clamp(0.5rem,1.2vw,1.2rem); position: relative; z-index: 1; }
+.overview-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: clamp(0.6rem,1.2vw,1.2rem); display: flex; flex-direction: column; gap: clamp(0.3rem,0.6vw,0.6rem); }
+.overview-card-num { font-family: var(--font-display); font-size: clamp(1.8rem,3.5vw,3rem); font-weight: 600; color: var(--border); line-height: 1; }
+.overview-card-title { font-family: var(--font-display); font-size: clamp(0.85rem,1.4vw,1.2rem); font-weight: 600; color: var(--text-primary); line-height: 1.25; }
+.overview-card-dest { font-family: var(--font-body); font-size: var(--small-size); color: var(--text-secondary); line-height: 1.5; }
+.overview-card-tag { font-family: var(--font-body); font-size: var(--label-size); font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.3em 0.7em; border-radius: 2em; border: 1px solid; display: inline-block; margin-top: auto; }
+/* === FULLSCREEN BUTTON ===================================== */
+.fs-btn {
+  position: fixed;
+  bottom: 1.2rem;
+  right: 1.2rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+  font-size: 1rem;
+  line-height: 1;
+}
+.fs-btn:hover { background: rgba(255,255,255,0.15); color: var(--text-primary); }
+/* === INLINE EDITING ======================================== */
+.edit-hotzone { position: fixed; top: 0; left: 0; width: 80px; height: 80px; z-index: 10000; cursor: pointer; }
+.edit-toggle { position: fixed; top: 1rem; left: 1rem; background: rgba(255,255,255,0.1); border: 1px solid var(--border); color: var(--text-primary); padding: 0.4em 0.9em; border-radius: 2em; font-family: var(--font-body); font-size: 0.75rem; cursor: pointer; z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+.edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
+.edit-banner { position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%); background: rgba(201,184,150,0.15); border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 0.5em 1.4em; border-radius: 2em; font-family: var(--font-body); font-size: 0.75rem; z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+.edit-banner.active { opacity: 1; pointer-events: auto; }
+body.edit-active [contenteditable] { outline: 1px dashed rgba(201,184,150,0.4); border-radius: 2px; cursor: text; }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots"></nav>
+<div class="edit-hotzone" id="editHotzone"></div>
+<button class="edit-toggle" id="editToggle">✏ 編輯</button>
+<div class="edit-banner" id="editBanner">編輯模式開啟 · 點擊任何文字修改 · Ctrl+S 儲存</div>
+<button class="fs-btn" id="fsBtn" title="全螢幕 (F)">⛶</button>
+
+
+<!-- ====================================================
+     SLIDE 1 — 封面
+     ==================================================== -->
+<section class="slide title-slide" id="slide-1">
+  <div class="glow-blob b1"></div>
+  <div class="glow-blob b2"></div>
+  <div class="glow-blob b3"></div>
+  <div class="title-inner">
+    <p class="title-eyebrow reveal">2026 · 深度慢旅 · 四人成行</p>
+    <h1 class="title-main reveal">荷比丹北歐<br><em>極光深度慢旅</em></h1>
+    <p class="title-sub reveal">10月23日 — 11月7日 · 16天15夜 · 西歐慢旅 7天 ＋ 北歐追光 9天</p>
+    <div class="title-cards reveal">
+      <span class="title-card">🌕 逆向時空配置</span>
+      <span class="title-card">🌌 下弦月暗夜追光</span>
+      <span class="title-card">🏰 荷比丹古城漫遊</span>
+      <span class="title-card">✈ 華航直飛 CI73/74</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ====================================================
+     SLIDE 2 — 方案一：荷比 + 北挪威特羅姆瑟
+     ==================================================== -->
+<section class="slide aurora-slide" id="slide-2">
+  <div class="glow-blob aurora1"></div>
+  <div class="glow-blob aurora2"></div>
+  <div class="glow-blob aurora3"></div>
+  <div class="mountain-ridge">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,120 0,80 100,40 200,65 320,20 450,55 540,28 650,60 760,18 880,52 980,35 1080,58 1200,30 1200,120" fill="#04100a" opacity="0.9"/>
+      <polygon points="0,120 0,95 120,75 240,88 370,60 490,80 600,68 720,82 840,62 960,78 1080,65 1200,74 1200,120" fill="#06140d" opacity="0.95"/>
+    </svg>
+  </div>
+  <div class="slide-content">
+    <div class="aurora-layout">
+      <div class="aurora-top reveal">
+        <div class="aurora-top-left">
+          <p class="section-label">西歐 Day1–7 ＋ 北歐 Day7–16 · 10/23–11/7</p>
+          <div class="plan-badge" style="color:#7ecfb0;border-color:rgba(126,207,176,0.4);background:rgba(126,207,176,0.08);">方案一</div>
+          <h2 class="aurora-plan-title">荷比慢旅 ＋ 挪威 <em>特羅姆瑟</em> 峽灣極光</h2>
+          <p class="aurora-desc">阿姆斯特丹 2 晚調時差 → 比利時根特 + 布魯日古城 → 飛抵特羅姆瑟 → 連續 3 晚極光追逐</p>
+        </div>
+        <div class="aurora-top-right">
+          <div class="stat-item"><div class="stat-dot"></div><span><strong>西歐：</strong>荷蘭 + 比利時</span></div>
+          <div class="stat-item"><div class="stat-dot"></div><span><strong>北歐：</strong>挪威 Tromsø</span></div>
+          <div class="stat-item"><div class="stat-dot"></div><span><strong>極光：</strong>3 晚（Day 8–10，下弦月暗夜）</span></div>
+          <div class="stat-item"><div class="stat-dot"></div><span><strong>適合：</strong>峽灣地景 + 薩米文化愛好者</span></div>
+        </div>
+      </div>
+      <div class="reveal table-scroll">
+        <table class="itinerary-table">
+          <thead><tr><th>日期</th><th>城市</th><th>景點</th><th>目的</th></tr></thead>
+          <tbody>
+            <tr><td class="td-date">10/24 Day2</td><td class="td-city">🇳🇱 阿姆斯特丹</td><td class="td-spot">約旦區 Jordaan・辛格運河</td><td class="td-purpose">入住服務式公寓・運河慢步</td></tr>
+            <tr><td class="td-date">10/25 Day3</td><td class="td-city">🇳🇱 阿姆斯特丹</td><td class="td-spot">Coffeeshop・運河滿月夜航</td><td class="td-purpose">軟性藥物文化體驗・欣賞獵人月倒影</td></tr>
+            <tr><td class="td-date">10/26 Day4</td><td class="td-city">🇧🇪 根特</td><td class="td-spot">Belfry 鐘樓・香草河畔</td><td class="td-purpose">高鐵入城・中世紀古城首探</td></tr>
+            <tr><td class="td-date">10/27 Day5</td><td class="td-city">🇧🇪 根特</td><td class="td-spot">聖巴夫主教座堂・格拉文斯丁城堡</td><td class="td-purpose">凡艾克名畫・護城河畔精釀啤酒</td></tr>
+            <tr><td class="td-date">10/28 Day6</td><td class="td-city">🇧🇪 布魯日</td><td class="td-spot">布魯日 Bruges 一日遊</td><td class="td-purpose">北方威尼斯・馬車環城慢遊</td></tr>
+            <tr><td class="td-date">10/29 Day7</td><td class="td-city">✈ → 🇳🇴 特羅姆瑟</td><td class="td-spot">BRU → TOS 飛行日</td><td class="td-purpose">SAS 中轉奧斯陸・入住濱海公寓</td></tr>
+            <tr><td class="td-date">10/30 Day8</td><td class="td-city">🇳🇴 特羅姆瑟</td><td class="td-spot">北極大教堂・🌌 極光巴士①</td><td class="td-purpose">港口老街散步・專業嚮導機動追光</td></tr>
+            <tr><td class="td-date">10/31 Day9</td><td class="td-city">🇳🇴 特羅姆瑟</td><td class="td-spot">Fjellheisen 纜車・🌌 峽灣遊艇極光②</td><td class="td-purpose">俯瞰雪覆峽灣・外海零光害觀測攝影</td></tr>
+            <tr><td class="td-date">11/01 Day10</td><td class="td-city">🇳🇴 特羅姆瑟</td><td class="td-spot">薩米牧場馴鹿・🌌 薩米營地極光③</td><td class="td-purpose">手餵馴鹿・營火旁 Joik 歌謠等候極光</td></tr>
+            <tr><td class="td-date">11/02 Day11</td><td class="td-city">🇳🇴 特羅姆瑟</td><td class="td-spot">Polaria 水族館・Pust 浮動桑拿</td><td class="td-purpose">鬍鬚海豹・北冰洋冷水浴修復</td></tr>
+            <tr><td class="td-date">11/03 Day12</td><td class="td-city">🇳🇴 特羅姆瑟</td><td class="td-spot">哈士奇卡丁車・Storgata 步行街</td><td class="td-purpose">犬隊秋林拉行・極地博物館慢遊</td></tr>
+            <tr><td class="td-date">11/04 Day13</td><td class="td-city">✈ → 🇳🇱 阿姆斯特丹</td><td class="td-spot">TOS → OSL (KL8543 08:45–10:45) → AMS (KL1200 12:35–14:30)</td><td class="td-purpose">中轉奧斯陸・入住 YAYS 公寓・約旦區運河夜步</td></tr>
+            <tr><td class="td-date">11/05 Day14</td><td class="td-city">🇳🇱 阿姆斯特丹</td><td class="td-spot">梵谷博物館 / Rijksmuseum・Smart Shop</td><td class="td-purpose">大師名作・公寓內魔幻松露感官體驗</td></tr>
+            <tr><td class="td-date">11/06 Day15</td><td class="td-city">🇳🇱 桑斯安斯</td><td class="td-spot">風車村 Zaanse Schans</td><td class="td-purpose">傳統木鞋乳酪工坊・惜別晚宴</td></tr>
+            <tr><td class="td-date">11/07 Day16</td><td class="td-city">✈ AMS → TPE</td><td class="td-spot">華航 CI74 直飛返台</td><td class="td-purpose">11:00 起飛直飛返台</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ====================================================
+     SLIDE 3 — 方案二：荷蘭 + 丹麥 + 芬蘭羅凡涅米
+     ==================================================== -->
+<section class="slide aurora-slide" id="slide-3">
+  <div class="glow-blob aurora1" style="background:radial-gradient(ellipse,rgba(122,184,212,0.22) 0%,transparent 65%);"></div>
+  <div class="glow-blob aurora2" style="background:radial-gradient(ellipse,rgba(0,160,200,0.18) 0%,transparent 65%);"></div>
+  <div class="glow-blob aurora3" style="background:radial-gradient(ellipse,rgba(60,120,180,0.14) 0%,transparent 65%);"></div>
+  <div class="mountain-ridge">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,120 0,75 80,50 180,70 280,30 400,65 520,35 640,58 760,25 900,55 1020,38 1120,60 1200,42 1200,120" fill="#030a10" opacity="0.9"/>
+      <polygon points="0,120 0,92 150,78 300,90 440,70 580,85 700,72 840,88 970,74 1100,84 1200,76 1200,120" fill="#050e18" opacity="0.95"/>
+    </svg>
+  </div>
+  <div class="slide-content">
+    <div class="aurora-layout">
+      <div class="aurora-top reveal">
+        <div class="aurora-top-left">
+          <p class="section-label">西歐 Day1–5 ＋ 北歐 Day5–16 · 10/23–11/7</p>
+          <div class="plan-badge" style="color:#7ab8d4;border-color:rgba(122,184,212,0.4);background:rgba(122,184,212,0.08);">方案二</div>
+          <h2 class="aurora-plan-title">荷蘭 + 丹麥 ＋ 芬蘭 <em style="color:#7ab8d4;">羅凡涅米</em> 早雪童話</h2>
+          <p class="aurora-desc">荷蘭調時差 → 哥本哈根設計美學 → 飛羅凡涅米 → 人工雪道哈士奇雪橇 + 3 晚極光</p>
+        </div>
+        <div class="aurora-top-right">
+          <div class="stat-item"><div class="stat-dot" style="background:#7ab8d4;"></div><span><strong>西歐：</strong>荷蘭 · <strong>北歐預熱：</strong>丹麥 CPH</span></div>
+          <div class="stat-item"><div class="stat-dot" style="background:#7ab8d4;"></div><span><strong>北歐：</strong>芬蘭 Rovaniemi</span></div>
+          <div class="stat-item"><div class="stat-dot" style="background:#7ab8d4;"></div><span><strong>極光：</strong>3 晚（Day 8–10，玻璃頂木屋）</span></div>
+          <div class="stat-item"><div class="stat-dot" style="background:#7ab8d4;"></div><span><strong>亮點：</strong>唯一可玩真正雪地哈士奇雪橇</span></div>
+        </div>
+      </div>
+      <div class="reveal table-scroll">
+        <table class="itinerary-table">
+          <thead><tr><th>日期</th><th>城市</th><th>景點</th><th>目的</th></tr></thead>
+          <tbody>
+            <tr><td class="td-date">10/24 Day2</td><td class="td-city">🇳🇱 阿姆斯特丹</td><td class="td-spot">植物園・滑鐵盧市集</td><td class="td-purpose">入住公寓・低強度慢步調時差</td></tr>
+            <tr><td class="td-date">10/25 Day3</td><td class="td-city">🇳🇱 阿姆斯特丹</td><td class="td-spot">Coffeeshop・運河滿月夜航</td><td class="td-purpose">大麻布朗尼文化體驗・月照運河夜遊</td></tr>
+            <tr><td class="td-date">10/26 Day4</td><td class="td-city">✈ → 🇩🇰 哥本哈根</td><td class="td-spot">新港 Nyhavn 彩色木屋</td><td class="td-purpose">AMS→CPH 飛行日・彩色濱海木屋慢步</td></tr>
+            <tr><td class="td-date">10/27 Day5</td><td class="td-city">🇩🇰 哥本哈根</td><td class="td-spot">阿馬林堡宮・趣伏里花園 Tivoli</td><td class="td-purpose">皇家衛兵交接・花園夜間童話漫遊</td></tr>
+            <tr><td class="td-date">10/28 Day6</td><td class="td-city">🇩🇰 哥本哈根</td><td class="td-spot">黑鑽石圖書館・圓塔 Round Tower</td><td class="td-purpose">極簡建築美學・俯瞰哥本哈根老城</td></tr>
+            <tr><td class="td-date">10/29 Day7</td><td class="td-city">✈ → 🇫🇮 羅凡涅米</td><td class="td-spot">CPH → RVN 飛行日</td><td class="td-purpose">芬航轉赫爾辛基・入住玻璃頂極光木屋</td></tr>
+            <tr><td class="td-date">10/30 Day8</td><td class="td-city">🇫🇮 羅凡涅米</td><td class="td-spot">聖誕老人村・北極圈線・🌌 雪靴健行①</td><td class="td-purpose">跨越北緯 66°33′・森林尋找極光高地</td></tr>
+            <tr><td class="td-date">10/31 Day9</td><td class="td-city">🇫🇮 羅凡涅米</td><td class="td-spot">🛷 人工雪道哈士奇雪橇・🌌 極光小巴②</td><td class="td-purpose">Apukka 3km 真雪橇自駕體驗</td></tr>
+            <tr><td class="td-date">11/01 Day10</td><td class="td-city">🇫🇮 羅凡涅米</td><td class="td-spot">薩米馴鹿牧場・🌌 湖畔木屋極光③</td><td class="td-purpose">馴鹿雪橇慢行・足不出戶仰望極光</td></tr>
+            <tr><td class="td-date">11/02 Day11</td><td class="td-city">🇫🇮 羅凡涅米</td><td class="td-spot">Arktikum 博物館・湖畔柴燒桑拿冰泳</td><td class="td-purpose">北極生態薩米歷史・芬蘭冷熱療法</td></tr>
+            <tr><td class="td-date">11/03 Day12</td><td class="td-city">🇫🇮 羅凡涅米</td><td class="td-spot">歐納斯瓦拉山白樺林健行</td><td class="td-purpose">展望台遠眺 Kemijoki 河・鮭魚湯午餐</td></tr>
+            <tr><td class="td-date">11/04 Day13</td><td class="td-city">✈ → 🇳🇱 阿姆斯特丹</td><td class="td-spot">RVN → AMS 飛行日</td><td class="td-purpose">入住 YAYS 公寓・晚間聚餐</td></tr>
+            <tr><td class="td-date">11/05 Day14</td><td class="td-city">🇳🇱 阿姆斯特丹</td><td class="td-spot">喜力啤酒館 Heineken・Smart Shop</td><td class="td-purpose">互動觀光生啤品嚐・公寓魔幻松露體驗</td></tr>
+            <tr><td class="td-date">11/06 Day15</td><td class="td-city">🇳🇱 阿姆斯特丹</td><td class="td-spot">亞伯特市場 Albert Cuyp・惜別晚宴</td><td class="td-purpose">Stroopwafel 焦糖煎餅・約旦區海鮮餐廳</td></tr>
+            <tr><td class="td-date">11/07 Day16</td><td class="td-city">✈ AMS → TPE</td><td class="td-spot">華航 CI74 直飛返台</td><td class="td-purpose">11:00 起飛直飛返台</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ====================================================
+     SLIDE 4 — 方案三：荷比 + 瑞典阿比斯庫夜鋪火車
+     ==================================================== -->
+<section class="slide aurora-slide" id="slide-4">
+  <div class="glow-blob aurora1" style="background:radial-gradient(ellipse,rgba(160,80,255,0.2) 0%,transparent 65%);"></div>
+  <div class="glow-blob aurora2" style="background:radial-gradient(ellipse,rgba(80,0,180,0.18) 0%,transparent 65%);"></div>
+  <div class="glow-blob aurora3" style="background:radial-gradient(ellipse,rgba(0,200,140,0.12) 0%,transparent 65%); top:10%; right:5%;"></div>
+  <div class="mountain-ridge">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,120 0,70 90,35 200,58 310,15 430,50 560,22 680,55 790,12 920,48 1040,28 1150,55 1200,38 1200,120" fill="#060410" opacity="0.9"/>
+      <polygon points="0,120 0,90 160,76 320,88 480,68 620,84 760,70 900,85 1050,72 1200,80 1200,120" fill="#0a0618" opacity="0.95"/>
+    </svg>
+  </div>
+  <div class="slide-content">
+    <div class="aurora-layout">
+      <div class="aurora-top reveal">
+        <div class="aurora-top-left">
+          <p class="section-label">西歐 Day1–7 ＋ 北歐 Day7–16 · 10/23–11/7</p>
+          <div class="plan-badge" style="color:#c080ff;border-color:rgba(192,128,255,0.4);background:rgba(192,128,255,0.08);">方案三</div>
+          <h2 class="aurora-plan-title">荷比慢旅 ＋ 🚂 北極夜鋪火車 ＋ 瑞典 <em style="color:#c080ff;">阿比斯庫</em></h2>
+          <p class="aurora-desc">荷蘭 + 安特衛普 → 斯德哥爾摩老城 → SJ 北極夜鋪四人包廂 → 阿比斯庫藍洞 3 晚極光</p>
+        </div>
+        <div class="aurora-top-right">
+          <div class="stat-item"><div class="stat-dot" style="background:#c080ff;"></div><span><strong>西歐：</strong>荷蘭 + 比利時安特衛普</span></div>
+          <div class="stat-item"><div class="stat-dot" style="background:#c080ff;"></div><span><strong>北歐：</strong>瑞典 Abisko（全極圈最高晴天率）</span></div>
+          <div class="stat-item"><div class="stat-dot" style="background:#c080ff;"></div><span><strong>極光：</strong>3 晚（Day 10–12，藍洞效應）</span></div>
+          <div class="stat-item"><div class="stat-dot" style="background:#c080ff;"></div><span><strong>亮點：</strong>SJ 北極夜鋪四人專屬包廂</span></div>
+        </div>
+      </div>
+      <div class="reveal table-scroll">
+        <table class="itinerary-table">
+          <thead><tr><th>日期</th><th>城市</th><th>景點</th><th>目的</th></tr></thead>
+          <tbody>
+            <tr><td class="td-date">10/24 Day2</td><td class="td-city">🇳🇱 阿姆斯特丹</td><td class="td-spot">Rijksmuseum 廣場・馮德爾公園</td><td class="td-purpose">步行調時差・低強度地標慢遊</td></tr>
+            <tr><td class="td-date">10/25 Day3</td><td class="td-city">🇳🇱 阿姆斯特丹</td><td class="td-spot">Coffeeshop・九街・滿月夜航</td><td class="td-purpose">大麻文化體驗・歷史街區散步</td></tr>
+            <tr><td class="td-date">10/26 Day4</td><td class="td-city">✈ → 🇧🇪 安特衛普</td><td class="td-spot">Grote Markt 大廣場</td><td class="td-purpose">高鐵 1h15m・歐洲最美車站入城</td></tr>
+            <tr><td class="td-date">10/27 Day5</td><td class="td-city">🇧🇪 安特衛普</td><td class="td-spot">聖母主教座堂・魯本斯名畫・鑽石區</td><td class="td-purpose">宗教巨作賞析・淡菜薯條精釀啤酒</td></tr>
+            <tr><td class="td-date">10/28 Day6</td><td class="td-city">🇧🇪 根特</td><td class="td-spot">聖巴夫座堂・鐘樓・香草河畔</td><td class="td-purpose">火車 40min・中世紀古城漫步</td></tr>
+            <tr><td class="td-date">10/29 Day7</td><td class="td-city">✈ → 🇸🇪 斯德哥爾摩</td><td class="td-spot">BRU→ARN 騎士島秋景</td><td class="td-purpose">入住老城公寓・梅拉倫湖傍晚漫步</td></tr>
+            <tr><td class="td-date">10/30 Day8</td><td class="td-city">🇸🇪 斯德哥爾摩</td><td class="td-spot">老城 Gamla Stan・🚂 SJ 北極夜鋪（車上過夜）</td><td class="td-purpose">石板路散步・四人包廂夜談啟程北上</td></tr>
+            <tr><td class="td-date">10/31 Day9</td><td class="td-city">🇸🇪 基律納 → 阿比斯庫</td><td class="td-spot">北極鐵路換乘・STF 木屋入住</td><td class="td-purpose">鐵路換乘・面托內湖木屋溫馨火鍋</td></tr>
+            <tr><td class="td-date">11/01 Day10</td><td class="td-city">🇸🇪 阿比斯庫</td><td class="td-spot">阿比斯庫峽谷・🌌 Aurora Sky Station①</td><td class="td-purpose">秋季溪流峽谷・纜車登頂全極圈最晴觀測站</td></tr>
+            <tr><td class="td-date">11/02 Day11</td><td class="td-city">🇸🇪 阿比斯庫</td><td class="td-spot">托內湖・拉普蘭之門・🌌 極光攝影工作坊②</td><td class="td-purpose">平靜如鏡湖面・無光害森林專業拍攝</td></tr>
+            <tr><td class="td-date">11/03 Day12</td><td class="td-city">🇸🇪 阿比斯庫</td><td class="td-spot">納爾維克跨境一日遊・🌌 湖畔營火極光③</td><td class="td-purpose">峽灣壯景・獵人小屋熱湯等候極光倒影</td></tr>
+            <tr><td class="td-date">11/04 Day13</td><td class="td-city">✈ → 🇳🇱 阿姆斯特丹</td><td class="td-spot">KRN → ARN → AMS 飛行日</td><td class="td-purpose">入住 Wittenberg 公寓・晚間聚餐</td></tr>
+            <tr><td class="td-date">11/05 Day14</td><td class="td-city">🇳🇱 阿姆斯特丹</td><td class="td-spot">閣樓上的吾主博物館・Smart Shop</td><td class="td-purpose">隱藏版景點・公寓松露視覺音樂體驗</td></tr>
+            <tr><td class="td-date">11/06 Day15</td><td class="td-city">🇳🇱 阿姆斯特丹</td><td class="td-spot">辛格花市 Bloemenmarkt・公寓海鮮火鍋</td><td class="td-purpose">選購木製手藝品・四人自煮惜別晚宴</td></tr>
+            <tr><td class="td-date">11/07 Day16</td><td class="td-city">✈ AMS → TPE</td><td class="td-spot">華航 CI74 直飛返台</td><td class="td-purpose">11:00 起飛直飛返台</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ====================================================
+     SLIDE 5 — 方案四：荷蘭 + 丹麥 + 北挪威 + 自駕峽灣（推薦）
+     ==================================================== -->
+<section class="slide aurora-slide" id="slide-5">
+  <div class="glow-blob aurora1" style="background:radial-gradient(ellipse,rgba(212,165,116,0.2) 0%,transparent 65%); top:-5%; left:0%;"></div>
+  <div class="glow-blob aurora2" style="background:radial-gradient(ellipse,rgba(200,180,120,0.15) 0%,transparent 65%); top:5%; right:5%;"></div>
+  <div class="glow-blob aurora3" style="background:radial-gradient(ellipse,rgba(0,180,120,0.14) 0%,transparent 65%); top:8%; left:35%;"></div>
+  <div class="mountain-ridge">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,120 0,78 110,45 230,65 340,22 470,58 590,30 700,62 820,18 940,54 1060,32 1160,58 1200,40 1200,120" fill="#100e04" opacity="0.9"/>
+      <polygon points="0,120 0,93 170,80 330,92 490,73 640,86 780,75 930,88 1080,76 1200,82 1200,120" fill="#180c04" opacity="0.95"/>
+    </svg>
+  </div>
+  <div class="slide-content">
+    <div class="aurora-layout">
+      <div class="aurora-top reveal">
+        <div class="aurora-top-left">
+          <p class="section-label">西歐 Day1–5 ＋ 北歐 Day5–16 · 10/23–11/7</p>
+          <div class="plan-badge" style="color:#ffc840;border-color:rgba(255,200,64,0.5);background:rgba(255,200,64,0.1);">⭐ 方案四 · 最推薦</div>
+          <h2 class="aurora-plan-title">荷蘭 + 丹麥 ＋ 挪威 <em style="color:#ffc840;">特羅姆瑟</em> 自駕峽灣</h2>
+          <p class="aurora-desc">荷蘭調時差 → 哥本哈根設計美學 → CPH 直飛 TOS（免奧斯陸轉機）→ 4 晚極光 + 自駕索馬略島</p>
+        </div>
+        <div class="aurora-top-right">
+          <div class="stat-item"><div class="stat-dot" style="background:#ffc840;"></div><span><strong>西歐：</strong>荷蘭 · <strong>北歐預熱：</strong>丹麥 CPH</span></div>
+          <div class="stat-item"><div class="stat-dot" style="background:#ffc840;"></div><span><strong>北歐：</strong>挪威 Tromsø + Sommarøy</span></div>
+          <div class="stat-item"><div class="stat-dot" style="background:#ffc840;"></div><span><strong>極光：</strong>4 晚（Day 8–11，最多機會）</span></div>
+          <div class="stat-item"><div class="stat-dot" style="background:#ffc840;"></div><span><strong>亮點：</strong>CPH 直飛 TOS + 峽灣帆船追光</span></div>
+        </div>
+      </div>
+      <div class="reveal table-scroll">
+        <table class="itinerary-table">
+          <thead><tr><th>日期</th><th>城市</th><th>景點</th><th>目的</th></tr></thead>
+          <tbody>
+            <tr><td class="td-date">10/24 Day2</td><td class="td-city">🇳🇱 阿姆斯特丹</td><td class="td-spot">約旦區・九街 Jordaan</td><td class="td-purpose">入住公寓・焦糖煎餅・慢步調時差</td></tr>
+            <tr><td class="td-date">10/25 Day3</td><td class="td-city">🇳🇱 阿姆斯特丹</td><td class="td-spot">Coffeeshop・運河滿月夜航</td><td class="td-purpose">大麻布朗尼體驗・銀光運河月夜遊</td></tr>
+            <tr><td class="td-date">10/26 Day4</td><td class="td-city">✈ → 🇩🇰 哥本哈根</td><td class="td-spot">新港 Nyhavn 彩色木屋</td><td class="td-purpose">AMS→CPH 飛行日・露天咖啡漫步</td></tr>
+            <tr><td class="td-date">10/27 Day5</td><td class="td-city">🇩🇰 哥本哈根</td><td class="td-spot">丹麥設計博物館・趣伏里花園夜遊</td><td class="td-purpose">Designmuseum・北歐燈光藝術賞析</td></tr>
+            <tr><td class="td-date">10/28 Day6</td><td class="td-city">🇩🇰 哥本哈根</td><td class="td-spot">新港木造觀光船・克里斯蒂安自由城</td><td class="td-purpose">小美人魚雕像・波西米亞文化漫遊</td></tr>
+            <tr><td class="td-date">10/29 Day7</td><td class="td-city">✈ → 🇳🇴 特羅姆瑟</td><td class="td-spot">CPH→TOS 直飛（2h35m）</td><td class="td-purpose">免轉機直達・入住 BraMy 濱海公寓</td></tr>
+            <tr><td class="td-date">10/30 Day8</td><td class="td-city">🇳🇴 特羅姆瑟</td><td class="td-spot">極地博物館（阿蒙森）・🌌 極光探險巴士①</td><td class="td-purpose">北極探險家歷史・專業氣象系統追光</td></tr>
+            <tr><td class="td-date">10/31 Day9</td><td class="td-city">🇳🇴 特羅姆瑟</td><td class="td-spot">Fjellheisen 纜車・🌌 豪華極光帆船②</td><td class="td-purpose">山頂秋景咖啡廳・靜音帆船追光</td></tr>
+            <tr><td class="td-date">11/01 Day10</td><td class="td-city">🇳🇴 特羅姆瑟</td><td class="td-spot">哈士奇卡丁車基地・🌌 薩米 Lavvu 營火③</td><td class="td-purpose">犬隊拉行幼犬撫育・帳篷烤火等候極光</td></tr>
+            <tr><td class="td-date">11/02 Day11</td><td class="td-city">🇳🇴 索馬略島</td><td class="td-spot">自駕 Sommarøy 島・🌌 島嶼暗夜極光④</td><td class="td-purpose">北極夏威夷白沙灘・無光害極光倒影</td></tr>
+            <tr><td class="td-date">11/03 Day12</td><td class="td-city">🇳🇴 特羅姆瑟</td><td class="td-spot">Mathallen 北歐海鮮・Pust 浮動桑拿</td><td class="td-purpose">精緻海鮮午餐・北冰洋冰泳修復</td></tr>
+            <tr><td class="td-date">11/04 Day13</td><td class="td-city">✈ → 🇳🇱 阿姆斯特丹</td><td class="td-spot">TOS → OSL (KL8543 08:45–10:45) → AMS (KL1200 12:35–14:30)</td><td class="td-purpose">中轉奧斯陸・入住 Wittenberg 公寓・荷式晚餐小聚</td></tr>
+            <tr><td class="td-date">11/05 Day14</td><td class="td-city">🇳🇱 阿姆斯特丹</td><td class="td-spot">Rijksmuseum 林布蘭《夜巡》・Smart Shop</td><td class="td-purpose">維梅爾名作・公寓魔幻松露感官體驗</td></tr>
+            <tr><td class="td-date">11/06 Day15</td><td class="td-city">🇳🇱 桑斯安斯</td><td class="td-spot">風車村 Zaanse Schans 秋遊</td><td class="td-purpose">落葉風車運河秋景・惜別海鮮晚宴</td></tr>
+            <tr><td class="td-date">11/07 Day16</td><td class="td-city">✈ AMS → TPE</td><td class="td-spot">華航 CI74 直飛返台</td><td class="td-purpose">11:00 起飛直飛返台</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ====================================================
+     SLIDE 6 — 四方案總覽比較
+     ==================================================== -->
+<section class="slide overview-slide" id="slide-6">
+  <div class="glow-blob o1"></div>
+  <div class="slide-content">
+    <p class="section-label reveal" style="text-align:center;">四方案總覽 · 選擇你的旅行節奏</p>
+    <h2 class="reveal" style="font-family:var(--font-display);font-size:var(--h2-size);color:var(--text-primary);text-align:center;margin-bottom:clamp(0.8rem,1.8vw,1.8rem);">10/23–11/7 · 荷蘭比利時 5–7天 ＋ 北歐 9–11天</h2>
+    <div class="overview-grid reveal">
+      <div class="overview-card">
+        <div class="overview-card-num">01</div>
+        <div class="overview-card-title">荷比 + 北挪威特羅姆瑟</div>
+        <div class="overview-card-dest">🇳🇱🇧🇪 荷蘭 + 比利時根特／布魯日<br>🇳🇴 Tromsø · 極光 3 晚<br>薩米文化・峽灣遊艇・哈士奇卡丁車</div>
+        <span class="overview-card-tag" style="color:#7ecfb0;border-color:rgba(126,207,176,0.4);background:rgba(126,207,176,0.08);">峽灣文化系</span>
+      </div>
+      <div class="overview-card">
+        <div class="overview-card-num">02</div>
+        <div class="overview-card-title">荷蘭 + 丹麥 + 芬蘭羅凡涅米</div>
+        <div class="overview-card-dest">🇳🇱🇩🇰 荷蘭 + 哥本哈根設計<br>🇫🇮 Rovaniemi · 極光 3 晚<br>玻璃頂木屋・真雪道哈士奇雪橇</div>
+        <span class="overview-card-tag" style="color:#7ab8d4;border-color:rgba(122,184,212,0.4);background:rgba(122,184,212,0.08);">童話雪地系</span>
+      </div>
+      <div class="overview-card">
+        <div class="overview-card-num">03</div>
+        <div class="overview-card-title">荷比 + 北極夜鋪火車 + 阿比斯庫</div>
+        <div class="overview-card-dest">🇳🇱🇧🇪 荷蘭 + 比利時安特衛普<br>🇸🇪 Abisko · 極光 3 晚<br>SJ 夜鋪四人包廂・Aurora Sky Station</div>
+        <span class="overview-card-tag" style="color:#c080ff;border-color:rgba(192,128,255,0.4);background:rgba(192,128,255,0.08);">鐵道野奢系</span>
+      </div>
+      <div class="overview-card" style="border-color:rgba(255,200,64,0.25);background:rgba(255,200,64,0.05);">
+        <div class="overview-card-num" style="color:rgba(255,200,64,0.3);">04</div>
+        <div class="overview-card-title">荷蘭 + 丹麥 + 特羅姆瑟自駕 ⭐</div>
+        <div class="overview-card-dest">🇳🇱🇩🇰 荷蘭 + 哥本哈根設計<br>🇳🇴 Tromsø + Sommarøy · 極光 4 晚<br>CPH 直飛 TOS・帆船追光・島嶼自駕</div>
+        <span class="overview-card-tag" style="color:#ffc840;border-color:rgba(255,200,64,0.5);background:rgba(255,200,64,0.1);">🏆 最推薦</span>
+      </div>
+    </div>
+    <div class="divider reveal"></div>
+    <p class="reveal" style="font-family:var(--font-body);font-size:var(--small-size);color:var(--text-secondary);text-align:center;letter-spacing:0.08em;">
+      逆向時空配置：10/23–10/29 西歐（月圓期）→ 10/29–11/4 北歐追光（下弦月暗夜）→ 11/4–11/7 返回阿姆斯特丹 → 11/7 返台
+    </p>
+  </div>
+</section>
+
+
+<script>
+/* === SLIDE CONTROLLER ====================================== */
+class SlidePresentation {
+  constructor() {
+    this.slides = Array.from(document.querySelectorAll('.slide'));
+    this.currentSlide = 0;
+    this.total = this.slides.length;
+    this.progressBar = document.getElementById('progressBar');
+    this.navDotsContainer = document.getElementById('navDots');
+    this.setupIntersectionObserver();
+    this.setupKeyboardNav();
+    this.setupTouchNav();
+    this.setupNavDots();
+    this.updateProgress(0);
+    this.slides[0]?.classList.add('visible');
+  }
+  setupIntersectionObserver() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          const idx = this.slides.indexOf(entry.target);
+          if (idx !== -1) { this.currentSlide = idx; this.updateProgress(idx); this.updateNavDots(idx); }
+        }
+      });
+    }, { threshold: 0.5 });
+    this.slides.forEach(slide => observer.observe(slide));
+  }
+  setupKeyboardNav() {
+    document.addEventListener('keydown', (e) => {
+      if (e.target.getAttribute('contenteditable')) return;
+      if (['ArrowDown','ArrowRight',' ','PageDown'].includes(e.key)) { e.preventDefault(); this.goTo(this.currentSlide + 1); }
+      else if (['ArrowUp','ArrowLeft','PageUp'].includes(e.key)) { e.preventDefault(); this.goTo(this.currentSlide - 1); }
+      else if (e.key === 'Home') { e.preventDefault(); this.goTo(0); }
+      else if (e.key === 'End') { e.preventDefault(); this.goTo(this.total - 1); }
+    });
+  }
+  setupTouchNav() {
+    let startY = 0, startX = 0;
+    document.addEventListener('touchstart', e => { startY = e.touches[0].clientY; startX = e.touches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend', e => {
+      const dy = startY - e.changedTouches[0].clientY, dx = startX - e.changedTouches[0].clientX;
+      if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 50) this.goTo(this.currentSlide + (dy > 0 ? 1 : -1));
+    }, { passive: true });
+  }
+  setupNavDots() {
+    this.navDotsContainer.innerHTML = '';
+    this.slides.forEach((_, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'nav-dot' + (i === 0 ? ' active' : '');
+      btn.setAttribute('aria-label', `投影片 ${i + 1}`);
+      btn.addEventListener('click', () => this.goTo(i));
+      this.navDotsContainer.appendChild(btn);
+    });
+  }
+  updateNavDots(idx) { document.querySelectorAll('.nav-dot').forEach((dot, i) => dot.classList.toggle('active', i === idx)); }
+  updateProgress(idx) { this.progressBar.style.width = (this.total > 1 ? (idx / (this.total - 1)) * 100 : 100) + '%'; }
+  goTo(idx) { if (idx >= 0 && idx < this.total) this.slides[idx].scrollIntoView({ behavior: 'smooth' }); }
+}
+const presentation = new SlidePresentation();
+window.presentation = presentation;
+
+/* === INLINE EDITOR ========================================= */
+class InlineEditor {
+  constructor() {
+    this.isActive = false;
+    this.editToggle = document.getElementById('editToggle');
+    this.editBanner = document.getElementById('editBanner');
+    this.editHotzone = document.getElementById('editHotzone');
+    this.hideTimeout = null;
+    this.setupHover();
+    this.setupKeyboard();
+    this.editToggle.addEventListener('click', () => this.toggle());
+    this.editHotzone.addEventListener('click', () => this.toggle());
+  }
+  setupHover() {
+    const show = () => { clearTimeout(this.hideTimeout); this.editToggle.classList.add('show'); };
+    const hide = () => { this.hideTimeout = setTimeout(() => { if (!this.isActive) this.editToggle.classList.remove('show'); }, 400); };
+    this.editHotzone.addEventListener('mouseenter', show);
+    this.editHotzone.addEventListener('mouseleave', hide);
+    this.editToggle.addEventListener('mouseenter', show);
+    this.editToggle.addEventListener('mouseleave', hide);
+  }
+  setupKeyboard() {
+    document.addEventListener('keydown', (e) => {
+      if ((e.key === 'e' || e.key === 'E') && !e.target.getAttribute('contenteditable')) this.toggle();
+      if (e.key === 's' && (e.ctrlKey || e.metaKey) && this.isActive) { e.preventDefault(); this.exportFile(); }
+    });
+  }
+  toggle() {
+    this.isActive = !this.isActive;
+    document.body.classList.toggle('edit-active', this.isActive);
+    this.editToggle.classList.toggle('active', this.isActive);
+    this.editBanner.classList.toggle('active', this.isActive);
+    this.editToggle.textContent = this.isActive ? '✓ 完成編輯' : '✏ 編輯';
+    if (this.isActive) {
+      document.querySelectorAll('h1,h2,h3,p,td,th').forEach(el => el.setAttribute('contenteditable','true'));
+    } else {
+      document.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+    }
+  }
+  exportFile() {
+    const editableEls = Array.from(document.querySelectorAll('[contenteditable]'));
+    editableEls.forEach(el => el.removeAttribute('contenteditable'));
+    document.body.classList.remove('edit-active');
+    this.editToggle.classList.remove('active','show');
+    this.editBanner.classList.remove('active');
+    this.editToggle.textContent = '✏ 編輯';
+    const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    document.body.classList.add('edit-active');
+    editableEls.forEach(el => el.setAttribute('contenteditable','true'));
+    this.editToggle.classList.add('active');
+    this.editBanner.classList.add('active');
+    this.editToggle.textContent = '✓ 完成編輯';
+    const blob = new Blob([html], { type: 'text/html' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = '行程選擇簡報.html';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+}
+new InlineEditor();
+
+/* === FULLSCREEN TOGGLE ===================================== */
+(function () {
+  const btn = document.getElementById('fsBtn');
+  function isFS() { return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+  function updateIcon() { btn.textContent = isFS() ? '✕' : '⛶'; btn.title = isFS() ? '離開全螢幕 (F)' : '全螢幕 (F)'; }
+  function toggle() {
+    if (!isFS()) {
+      (document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen).call(document.documentElement);
+    } else {
+      (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    }
+  }
+  btn.addEventListener('click', toggle);
+  document.addEventListener('fullscreenchange', updateIcon);
+  document.addEventListener('webkitfullscreenchange', updateIcon);
+  document.addEventListener('keydown', (e) => {
+    if ((e.key === 'f' || e.key === 'F') && !e.target.getAttribute('contenteditable')) toggle();
+  });
+})();
+</script>
+</body>
+</html>
